@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Ys Balla 商品管理システム')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <h1>Ys Balla 商品管理システム</h1>
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    <p>商品の管理、商品の問い合わせをすることができます。</p>
 @stop
 
 @section('css')
