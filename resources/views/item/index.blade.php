@@ -12,10 +12,40 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">商品一覧</h3>
+                    <div class="input-group row">
+                    <div class="input-group-append">
+                    <form action="{{ route('item.index') }}" method="GET">
+                            <input type="text" name="keyword" value="{{ $keyword }}" placeholder="商品名検索" class="col-auto">
+                            <select name="type" value="{{ $type }}" data-toggle="select" class="col-auto form-select">
+                                <option value="">アイテム別</option>
+                                <option value="1">シューズ</option>
+                                <option value="2">ボール</option>
+                                <option value="3">ウェア</option>
+                                <option value="4">バッグ</option>
+                                <option value="5">アクセサリー</option>
+                            </select>
+                            <select name="brand" value="{{ $brand }}" data-toggle="select" class="col-auto">
+                                <option value="">ブランド別</option>
+                                <option value="1">NIKE</option>
+                                <option value="2">asics</option>
+                                <option value="3">adidas</option>
+                                <option value="4">NewBlance</option>
+                                <option value="5">その他</option>
+                            </select>
+                            <select name="status" value="{{ $status }}" data-toggle="select" class="col-auto">
+                                <option value="">在庫の有無</option>
+                                <option value="1">在庫あり</option>
+                                <option value="0">欠品中</option>
+                            </select>
+                            <button type="submit" class="btn btn-default" name="search_button col-auto">検索</button>
+                        </form>
+                        </div>
+                        </div>
+
                     <div class="card-tools">
                         <div class="input-group input-group-sm">
                             <div class="input-group-append">
-                                <a href="{{ url('items/add') }}" class="btn btn-default">商品登録</a>
+                                <a href="{{ url('items/add') }}" class="btn btn-primary">商品登録</a>
                             </div>
                         </div>
                     </div>
@@ -23,22 +53,28 @@
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
+                        @if(count($search_items) === 0)
+                        <p class="text-center pt-5">該当する商品はありません。</p>
+                        @else
                             <tr>
                                 <th>ID</th>
-                                <th>名前</th>
-                                <th>種別</th>
-                                <th>詳細</th>
+                                <th>商品名</th>
+                                <th>アイテム</th>
+                                <th>ブランド</th>
+                                <th>在庫</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($items as $item)
+                            @foreach ($search_items as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->type }}</td>
-                                    <td>{{ $item->detail }}</td>
+                                    <td>{{ App\Models\Item::getTypeName($item->type);}}</td>
+                                    <td>{{ App\Models\Item::getBrandName($item->brand);}}</td>
+                                    <td>@if($item->status === 1)在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
                                 </tr>
                             @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
