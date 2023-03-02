@@ -21,8 +21,10 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('items')->group(function () {
-    Route::get('/', [App\Http\Controllers\ItemController::class, 'index'])->name('item.index');
-    Route::get('/add', [App\Http\Controllers\ItemController::class, 'add']);
-    Route::post('/add', [App\Http\Controllers\ItemController::class, 'add']);
+Route::group(['prefix' => 'items' , 'as' => 'item.'], function () {
+    Route::get('/', [App\Http\Controllers\ItemController::class, 'index'])->name('index');
+    Route::get('/add', [App\Http\Controllers\ItemController::class, 'add'])->name('add');
+    Route::post('/confirm', [App\Http\Controllers\ItemController::class, 'add'])->name('confirm');
+    Route::get('/thanks', [App\Http\Controllers\ItemController::class, 'showThanks'])->name('showThanks');
+    Route::post('/thanks', [App\Http\Controllers\ItemController::class, 'store'])->name('thanks');
 });

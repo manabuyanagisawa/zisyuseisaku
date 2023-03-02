@@ -20,7 +20,7 @@
             @endif
 
             <div class="card card-primary">
-                <form method="POST">
+                <form method="POST" action="{{ route('item.confirm') }}">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
@@ -81,9 +81,8 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">登録</button>
+                        <button type="submit" class="btn btn-primary">登録内容確認</button>
                     </div>
                 </form>
             </div>

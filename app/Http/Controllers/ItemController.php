@@ -49,7 +49,7 @@ class ItemController extends Controller
         }
             
         // ページネーション設定 (10)は一度に表示する数
-        $search_items = $query->paginate(10);
+        $search_items = $query->paginate(10)->withQueryString();
         $items = Item::all();
         return view('item.index', compact('items','search_items','keyword','type','brand','status'));
     }
@@ -64,11 +64,10 @@ class ItemController extends Controller
             // バリデーション
             $this->validate($request, [
                 'name' => 'required|max:100',
-                'price' => 'required|max:10',
+                'price' => 'required|integer',
                 'type' => 'required',
                 'brand' => 'required',
             ]);
-
             // 商品登録
             Item::create([
                 'user_id' => Auth::user()->id,
@@ -77,10 +76,41 @@ class ItemController extends Controller
                 'type' => $request->type,
                 'brand' => $request->brand,
             ]);
+            $inquiry = $request->all();
 
-            return redirect('/items');
+            return view('item.confirm',compact('inquiry'));
         }
 
         return view('item.add');
+    }
+
+    public function store(Request $request){
+        $request->validate([
+            'name' => 'required|max:100',
+            'price' => 'required|integer',
+            'type' => 'required',
+            'brand' => 'required',
+        ]);
+        $action = $request->input('action');
+        $inquiry = $request->except('action');
+
+        if($action !== 'submit'){
+            return redirect()
+            ->route('item.add')
+            ->withInput($inquiry);
+        }else{
+            Item::create([
+                'user_id' => Auth::user()->id,
+                'name' => $request->name,
+                'price' => $request->price,
+                'type' => $request->type,
+                'brand' => $request->brand,
+            ]);
+            return redirect('/items/thanks');
+    }}
+
+      // 登録後の画像表示
+    public function showThanks(){
+        return view('item.thanks');
     }
 }

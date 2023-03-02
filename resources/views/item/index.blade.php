@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">商品一覧</h3>
-                    <div class="input-group row">
+                    <div class="input-group row d-flex justify-content-center">
                     <div class="input-group-append">
                     <form action="{{ route('item.index') }}" method="GET">
                             <input type="text" name="keyword" value="{{ $keyword }}" placeholder="商品名検索" class="col-auto">
@@ -37,7 +37,7 @@
                                 <option value="1">在庫あり</option>
                                 <option value="0">欠品中</option>
                             </select>
-                            <button type="submit" class="btn btn-default" name="search_button col-auto">検索</button>
+                            <button type="submit" class="btn btn-default" name="search_button">検索</button>
                         </form>
                         </div>
                         </div>
@@ -59,6 +59,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>商品名</th>
+                                <th>値段</th>
                                 <th>アイテム</th>
                                 <th>ブランド</th>
                                 <th>在庫</th>
@@ -69,6 +70,7 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
+                                    <td>¥{{ number_format($item->price) }}</td>
                                     <td>{{ App\Models\Item::getTypeName($item->type);}}</td>
                                     <td>{{ App\Models\Item::getBrandName($item->brand);}}</td>
                                     <td>@if($item->status === 1)在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
@@ -77,6 +79,8 @@
                         @endif
                         </tbody>
                     </table>
+                    <br>
+                    <div class="d-flex justify-content-center">{{ $search_items->links('pagination::bootstrap-4') }}</div>
                 </div>
             </div>
         </div>
