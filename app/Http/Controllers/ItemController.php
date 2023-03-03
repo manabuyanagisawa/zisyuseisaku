@@ -54,46 +54,29 @@ class ItemController extends Controller
         return view('item.index', compact('items','search_items','keyword','type','brand','status'));
     }
 
-    /**
-     * 商品登録
-     */
-    public function add(Request $request)
-    {
-        // POSTリクエストのとき
-        if ($request->isMethod('post')) {
-            // バリデーション
-            $this->validate($request, [
-                'name' => 'required|max:100',
-                'price' => 'required|integer',
-                'type' => 'required',
-                'brand' => 'required',
-            ]);
-            // 商品登録
-            Item::create([
-                'user_id' => Auth::user()->id,
-                'name' => $request->name,
-                'price' => $request->price,
-                'type' => $request->type,
-                'brand' => $request->brand,
-            ]);
-            $inquiry = $request->all();
 
-            return view('item.confirm',compact('inquiry'));
-        }
-
+    // ①商品登録画面表示
+    public function add(){
         return view('item.add');
     }
 
-    public function store(Request $request){
+    // ②入力後→登録内容確認画面へ遷移
+    public function confirm(Request $request){
         $request->validate([
             'name' => 'required|max:100',
             'price' => 'required|integer',
             'type' => 'required',
             'brand' => 'required',
         ]);
+        $inquiry = $request->all();
+        return view('item.confirm',compact('inquiry'));
+    }
+
+    // ③登録画面へ戻るor登録完了画面へ遷移
+    public function store(Request $request){
         $action = $request->input('action');
         $inquiry = $request->except('action');
-
+        
         if($action !== 'submit'){
             return redirect()
             ->route('item.add')
@@ -113,4 +96,6 @@ class ItemController extends Controller
     public function showThanks(){
         return view('item.thanks');
     }
+
+    
 }
