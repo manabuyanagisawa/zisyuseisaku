@@ -15,6 +15,11 @@ class Item extends Model
         $types = config('type.types');
         return $types[$type_id];
     }
+    public static function getStatusName($status_id){
+        $statuses = config('status.statuses');
+        return $statuses[$status_id];
+    }
+
     
     protected $table = 'items';
     /**

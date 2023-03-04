@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">商品一覧</h3>
+                    <h3 class="card-title">商品一覧<span class="text-success">@if($user_role === 2):管理者@endif</span></h3>
                     <div class="input-group row d-flex justify-content-center">
                     <div class="input-group-append">
                     <form action="{{ route('item.index') }}" method="GET">
@@ -35,7 +35,7 @@
                             <select name="status" value="{{ $status }}" data-toggle="select" class="col-auto">
                                 <option value="">在庫の有無</option>
                                 <option value="1">在庫あり</option>
-                                <option value="0">欠品中</option>
+                                <option value="2">欠品中</option>
                             </select>
                             <button type="submit" class="btn btn-default" name="search_button">検索</button>
                         </form>
@@ -63,6 +63,7 @@
                                 <th>アイテム</th>
                                 <th>ブランド</th>
                                 <th>在庫</th>
+                                @if($user_role === 2)<th>更新</th>@endif 
                             </tr>
                         </thead>
                         <tbody>
@@ -74,6 +75,7 @@
                                     <td>{{ App\Models\Item::getTypeName($item->type);}}</td>
                                     <td>{{ App\Models\Item::getBrandName($item->brand);}}</td>
                                     <td>@if($item->status === 1)在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
+                                    @if($user_role === 2)<td><a href="{{ route('item.detail', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新</a></td>@endif
                                 </tr>
                             @endforeach
                         @endif

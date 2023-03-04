@@ -24,6 +24,9 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
+        $user_id = Auth::user();
+        $user_role = DB::select('select role from users where id = ?',[$user_id->role])[0]->role;
+
         // 商品一覧取得
         $keyword = $request->input('keyword');
         $type = $request->input('type');
@@ -47,16 +50,17 @@ class ItemController extends Controller
         if(!is_null($status)) {
         $query->where('status', $status);
         }
-            
+        
         // ページネーション設定 (10)は一度に表示する数
+        // withQueryStringを使って検索後のページネーション
         $search_items = $query->paginate(10)->withQueryString();
         $items = Item::all();
-        return view('item.index', compact('items','search_items','keyword','type','brand','status'));
+        return view('item.index', compact('items','search_items','keyword','type','brand','status','user_role'));
     }
 
 
     // ①商品登録画面表示
-    public function add(){
+    public function add(Request $request){
         return view('item.add');
     }
 
@@ -92,10 +96,42 @@ class ItemController extends Controller
             return redirect('/items/thanks');
     }}
 
-      // 登録後の画像表示
+      // ④登録完了画面の表示
     public function showThanks(){
         return view('item.thanks');
     }
 
+    // ⑤商品の詳細画面へ遷移
+    public function detail($id){
+        $registered_item =Item::find($id);
+        return view('item.detail',compact('registered_item'));
+    }
+
+    // ⑥更新機能 更新後にホーム画面に遷移
+    public function update(Request $request,$id){
+        $request->validate([
+            'name' => 'required|max:100',
+            'price' => 'required|integer',
+            'type' => 'required',
+            'status' => 'required',
+            'brand' => 'required',
+        ]);
+        Item::find($id)->update([
+            'name' => $request->name,
+            'price'  => $request->price,
+            'type'  => $request->type,
+            'status' => $request->status,
+            'brand' => $request->brand,
+            'update_user_id' => Auth::id(),
+            ]);
+            return redirect()->route('home');
+    }
     
+    // ⑦商品の削除機能 削除後、ホーム画面へ遷移する
+    public function delete($id){
+        $delete_item = Item::find($id);
+        $delete_item->delete();
+        return redirect()->route('home');
+    }
+
 }
