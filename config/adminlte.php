@@ -230,6 +230,12 @@ return [
             'url'  => 'items',
             'icon' => 'fas fa-globe',
         ],
+        [
+            'text' => '店舗登録',
+            'url'  => 'shops',
+            'icon' => 'fas fa-globe',
+        ],
+
 
         // AdminLTEデフォルト
         /*

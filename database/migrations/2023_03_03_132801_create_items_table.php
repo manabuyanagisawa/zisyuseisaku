@@ -14,6 +14,7 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
+            // foreignId('名前')->constrained('マイグレーションファイル名')->comment('コメント');→外部キー制約
             $table->id();
             $table->foreignId('user_id')->constrained('users')->comment('登録者');
             $table->foreignId('update_user_id')->nullable()->constrained('users')->comment('更新者');
