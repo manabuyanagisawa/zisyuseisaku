@@ -25,7 +25,7 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $user_id = Auth::user();
-        $user_role = DB::select('select role from users where id = ?',[$user_id->role])[0]->role;
+        $user_role = $user_id->role;
 
         // 商品一覧取得
         $keyword = $request->input('keyword');

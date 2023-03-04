@@ -27,3 +27,10 @@ Route::group(['middleware' => 'can:admin' , 'prefix' => 'items' , 'as' => 'item.
     // ⑦商品の削除機能 削除後、ホーム画面へ遷移する
     Route::post('/{id}/delete', [App\Http\Controllers\ItemController::class, 'delete'])->name('delete');
 });
+
+Route::group(['middleware' => 'can:admin' , 'prefix' => 'shops' , 'as' => 'shop.'], function () {
+    // ①店舗の登録画面表示
+    Route::get('/', [App\Http\Controllers\ShopController::class, 'add'])->name('add');
+    // ②店舗の登録機能 登録後、ホーム画面へ遷移
+    Route::post('/thanks', [App\Http\Controllers\ShopController::class, 'store'])->name('store');
+});
