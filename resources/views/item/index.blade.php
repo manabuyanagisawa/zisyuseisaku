@@ -32,16 +32,16 @@
                                 <option value="4">NewBlance</option>
                                 <option value="5">その他</option>
                             </select>
-                            <select name="status" value="{{ $status }}" data-toggle="select" class="col-auto">
+                            <select name="stock" data-toggle="select" class="col-auto">
                                 <option value="">在庫の有無</option>
-                                <option value="1">在庫あり</option>
-                                <option value="2">欠品中</option>
+                                <option value="true">在庫あり</option>
+                                <option value="0">欠品中</option>
                             </select>
                             <button type="submit" class="btn btn-default" name="search_button">検索</button>
                         </form>
                         </div>
                         </div>
-
+                    @if($user_role === 2)
                     <div class="card-tools">
                         <div class="input-group input-group-sm">
                             <div class="input-group-append">
@@ -49,6 +49,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
@@ -62,6 +63,8 @@
                                 <th>値段</th>
                                 <th>アイテム</th>
                                 <th>ブランド</th>
+                                <th>サイズ</th>
+                                <th>カラー</th>
                                 <th>在庫</th>
                                 @if($user_role === 2)<th>更新</th>@endif 
                             </tr>
@@ -74,7 +77,9 @@
                                     <td>¥{{ number_format($item->price) }}</td>
                                     <td>{{ App\Models\Item::getTypeName($item->type);}}</td>
                                     <td>{{ App\Models\Item::getBrandName($item->brand);}}</td>
-                                    <td>@if($item->status === 1)在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
+                                    <td>@if(!empty($item->wear_size)){{ App\Models\Item::getSizeName($item->wear_size);}}@else - @endif</td>
+                                    <td>{{ App\Models\Item::getColorName($item->color);}}</td>
+                                    <td>@if(!empty($item->stock))在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
                                     @if($user_role === 2)<td><a href="{{ route('item.detail', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新</a></td>@endif
                                 </tr>
                             @endforeach

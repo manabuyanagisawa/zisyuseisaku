@@ -44,7 +44,7 @@
                                 <label class="form-check-label" for="inlineRadio02">ボール</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="inlineRadio03"  name="type" value="3" {{ old('type') == '3' ? 'checked' : '' }}>
+                                <input class="form-check-input" type="radio" id="inlineRadio03"  name="type" value="3" {{ old('type') == '3' ? 'checked' : '' }} onclick="formSwitch()">
                                 <label class="form-check-label" for="inlineRadio03">ウェア</label>
                             </div>
                             <div class="form-check form-check-inline">
@@ -80,6 +80,78 @@
                                 <label class="form-check-label" for="inlineRadio05">その他</label>
                             </div>
                         </div>
+
+                        <div class="form-group" id="wearSize">
+                            <label for="wear_size">サイズ</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio01" name="wear_size" value="1" {{ old('wear_size') == '1' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio01">XS</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio02"  name="wear_size" value="2" {{ old('wear_size') == '2' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio02">S</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio03"  name="wear_size" value="3" {{ old('wear_size') == '3' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio03">M</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio04"  name="wear_size" value="4" {{ old('wear_size') == '4' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio04">L</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio05"  name="wear_size" value="5" {{ old('wear_size') == '5' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio05">XL</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">カラー</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio01" name="color" value="1" {{ old('color') == '1' ? 'checked' : '' }} checked="checked">
+                                <label class="form-check-label" for="inlineRadio01">黒</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio02"  name="color" value="2" {{ old('color') == '2' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio02">赤</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio03"  name="color" value="3" {{ old('color') == '3' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio03">黄</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio04"  name="color" value="4" {{ old('color') == '4' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio04">青</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio05"  name="color" value="5" {{ old('color') == '5' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio05">緑</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio06"  name="color" value="6" {{ old('color') == '6' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio06">白</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio07"  name="color" value="7" {{ old('color') == '7' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="inlineRadio07">その他</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shop_id">店舗</label><br>
+                            <select name="shop_id" class="custom-select">
+                            <option value="">選んでください</option>
+                            @foreach($shops as $shop)
+                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                            @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stock">在庫</label><br>
+                            <input class="form-control" type="text" name="stock" value="{{ old('stock') }}">
+                        </div>
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">登録内容確認</button>
@@ -88,6 +160,23 @@
             </div>
         </div>
     </div>
+
+    <!-- ウェアが表示された時のみサイズのラジオボタンが表示される -->
+<script>
+function formSwitch() {
+    var status = document.getElementsByName('type');
+    if (status[2].checked) {
+        // ウェアが選択されたら下記を実行します
+        document.getElementById('wearSize').style.display = "";
+    } else {
+        // ウェアが選択されていない場合は非表示にします
+        document.getElementById('wearSize').style.display = "none";
+    }
+}
+
+window.addEventListener('load', formSwitch);
+</script>
+
 @stop
 
 @section('css')

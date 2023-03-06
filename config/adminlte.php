@@ -232,7 +232,7 @@ return [
         ],
         [
             'text' => '店舗登録',
-            'url'  => 'shops',
+            'url'  => 'shops/add',
             'icon' => 'fas fa-globe',
         ],
 

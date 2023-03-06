@@ -19,6 +19,17 @@ class Item extends Model
         $statuses = config('status.statuses');
         return $statuses[$status_id];
     }
+    public static function getSizeName($size_id){
+        $sizes = config('size.sizes');
+        return $sizes[$size_id];
+    }
+    public static function getColorName($color_id){
+        $colors = config('color.colors');
+        return $colors[$color_id];
+    }
+
+
+
 
     
     protected $table = 'items';
@@ -30,11 +41,14 @@ class Item extends Model
     protected $fillable = [
         'user_id',
         'update_user_id',
-        'status',
+        'shop_id',
         'price',
         'name',
         'type',
         'brand',
+        'wear_size',
+        'color',
+        'stock',
     ];
 
     /**

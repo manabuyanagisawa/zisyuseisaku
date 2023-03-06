@@ -17,10 +17,6 @@ class Shop extends Model
      */
     protected $fillable = [
         'name',
-        'item_id',
-        'wear_size',
-        'color',
-        'stock',
     ];
 
 }

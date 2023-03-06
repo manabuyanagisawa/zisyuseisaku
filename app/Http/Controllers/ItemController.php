@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
+use App\Models\Shop;
 use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
@@ -31,7 +32,7 @@ class ItemController extends Controller
         $keyword = $request->input('keyword');
         $type = $request->input('type');
         $brand = $request->input('brand');
-        $status = $request->input('status');
+        $stock = $request->input('stock');
         
         // 商品名検索
         $query = Item::query();
@@ -46,22 +47,28 @@ class ItemController extends Controller
         if(!is_null($brand)) {
         $query->where('brand', $brand);
         }
-        //在庫検索
-        if(!is_null($status)) {
-        $query->where('status', $status);
-        }
-        
+
+        // 在庫の状態に応じて、クエリを組み立てる
+        if(!is_null($stock)) {
+        $query = DB::table('items');
+        if ($stock == 'true') {
+            $query->where('stock', '>', 0); // 在庫あり
+        } elseif ($stock == '0') {
+            $query->where('stock', '=', 0); // 欠品中
+        }}
+
         // ページネーション設定 (10)は一度に表示する数
         // withQueryStringを使って検索後のページネーション
         $search_items = $query->paginate(10)->withQueryString();
         $items = Item::all();
-        return view('item.index', compact('items','search_items','keyword','type','brand','status','user_role'));
+        return view('item.index', compact('items','search_items','keyword','type','brand','stock','user_role'));
     }
 
 
     // ①商品登録画面表示
-    public function add(Request $request){
-        return view('item.add');
+    public function add(){
+        $shops = Shop::all();
+        return view('item.add',compact('shops'));
     }
 
     // ②入力後→登録内容確認画面へ遷移
@@ -71,16 +78,20 @@ class ItemController extends Controller
             'price' => 'required|integer',
             'type' => 'required',
             'brand' => 'required',
+            'shop_id' => 'required',
+            'wear_size' => 'integer',
+            'stock' => 'integer'
         ]);
         $inquiry = $request->all();
-        return view('item.confirm',compact('inquiry'));
+        $shop = Shop::find($inquiry['shop_id']);
+        return view('item.confirm',compact('inquiry','shop'));
     }
 
     // ③登録画面へ戻るor登録完了画面へ遷移
     public function store(Request $request){
         $action = $request->input('action');
         $inquiry = $request->except('action');
-        
+
         if($action !== 'submit'){
             return redirect()
             ->route('item.add')
@@ -92,6 +103,10 @@ class ItemController extends Controller
                 'price' => $request->price,
                 'type' => $request->type,
                 'brand' => $request->brand,
+                'shop_id' => $request->shop_id,
+                'wear_size' => $request->wear_size,
+                'color' => $request->color,
+                'stock' => $request->stock
             ]);
             return redirect('/items/thanks');
     }}
@@ -113,14 +128,12 @@ class ItemController extends Controller
             'name' => 'required|max:100',
             'price' => 'required|integer',
             'type' => 'required',
-            'status' => 'required',
             'brand' => 'required',
         ]);
         Item::find($id)->update([
             'name' => $request->name,
             'price'  => $request->price,
             'type'  => $request->type,
-            'status' => $request->status,
             'brand' => $request->brand,
             'update_user_id' => Auth::id(),
             ]);

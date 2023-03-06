@@ -47,10 +47,34 @@
                             {{ App\Models\Item::getBrandName($inquiry['brand']);}}
                             <input type="hidden" name="brand" value="{{ $inquiry['brand'] }}">
                         </div>
+                        @if(!empty($inquiry['wear_size']))
+                        <div class="form-group">
+                            <label for="wear_size">サイズ</label><br>
+                            {{ App\Models\Item::getSizeName($inquiry['wear_size']);}}
+                            <input type="hidden" name="wear_size" value="{{ $inquiry['wear_size'] }}">
+                        </div>
+                        @endif
+                        <div class="form-group">
+                            <label for="color">カラー</label><br>
+                            {{ App\Models\Item::getColorName($inquiry['color']);}}
+                            <input type="hidden" name="color" value="{{ $inquiry['color'] }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="shop_id">店舗名</label><br>
+                            {{ $shop->name }}
+                            <input type="hidden" name="shop_id" value="{{ $inquiry['shop_id'] }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="stock">在庫数</label><br>
+                            {{ $inquiry['stock'] }}個/枚
+                            <input type="hidden" name="stock" value="{{ $inquiry['stock'] }}">
+                        </div>
+                    </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" value="back" name="action" class="btn btn-primary">登録内容修正</button>
                         <button type="submit" value="submit" name="action" class="btn btn-primary">登録する</button>
+                    </div>
                     </div>
                 </form>
             </div>
