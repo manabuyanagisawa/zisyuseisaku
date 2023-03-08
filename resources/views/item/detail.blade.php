@@ -7,6 +7,16 @@
 @stop
 
 @section('content')
+<div class="row">
+    <div class="col-1">
+        <h6><span class="badge rounded-pill bg-info text-dark">登録者</span> {{ $registered_user->name }}</h6>
+    </div>
+        @if(isset($update_user->name))
+    <div class="col-1">
+        <h6><span class="badge  rounded-pill bg-success">更新者</span> {{ $update_user->name }}</h6>
+    </div>
+    @endif
+</div>
     <div class="row">
         <div class="col-md-10">
             @if ($errors->any())
@@ -25,49 +35,137 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">商品名</label><br>
-                            <input type="text" name="name" value="{{ $registered_item->name }}" class="w-75">
+                            <input type="text" name="name" value="{{ $registered_item->name }}" class="form-control w-50">
                             
                         </div>
 
                         <div class="form-group">
                             <label for="price">値段</label><br>
-                            <input type="text" name="price" value="{{ $registered_item->price }}">
+                            <input type="text" name="price" value="{{ $registered_item->price }}" class="form-control w-25">
                         </div>
 
                         <div class="form-group">
                             <label for="type">種別</label><br>
-                            {{ App\Models\Item::getTypeName(1);}}
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio01">{{ App\Models\Item::getTypeName(1);}}</label>
                             <input type="radio" name="type" value="1" @if($registered_item->type === 1)checked="checked"@endif>
-                            /{{ App\Models\Item::getTypeName(2);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio02">{{ App\Models\Item::getTypeName(2);}}</label>
                             <input type="radio" name="type" value="2" @if($registered_item->type === 2)checked="checked"@endif>
-                            /{{ App\Models\Item::getTypeName(3);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio03">{{ App\Models\Item::getTypeName(3);}}</label>
                             <input type="radio" name="type" value="3" @if($registered_item->type === 3)checked="checked"@endif>
-                            /{{ App\Models\Item::getTypeName(4);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio04">{{ App\Models\Item::getTypeName(4);}}</label>
                             <input type="radio" name="type" value="4" @if($registered_item->type === 4)checked="checked"@endif>
-                            /{{ App\Models\Item::getTypeName(5);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio05">{{ App\Models\Item::getTypeName(5);}}</label>
                             <input type="radio" name="type" value="5" @if($registered_item->type === 5)checked="checked"@endif>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="brand">ブランド</label><br>
-                            {{ App\Models\Item::getBrandName(1);}}
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio01">{{ App\Models\Item::getBrandName(1);}}</label>
                             <input type="radio" name="brand" value="1" @if($registered_item->brand === 1)checked="checked"@endif>
-                            /{{ App\Models\Item::getBrandName(2);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio02">{{ App\Models\Item::getBrandName(2);}}</label>
                             <input type="radio" name="brand" value="2" @if($registered_item->brand === 2)checked="checked"@endif>
-                            /{{ App\Models\Item::getBrandName(3);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio03">{{ App\Models\Item::getBrandName(3);}}</label>
                             <input type="radio" name="brand" value="3" @if($registered_item->brand === 3)checked="checked"@endif>
-                            /{{ App\Models\Item::getBrandName(4);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio04">{{ App\Models\Item::getBrandName(4);}}</label>
                             <input type="radio" name="brand" value="4" @if($registered_item->brand === 4)checked="checked"@endif>
-                            /{{ App\Models\Item::getBrandName(5);}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio05">{{ App\Models\Item::getBrandName(5);}}</label>
                             <input type="radio" name="brand" value="5" @if($registered_item->brand === 5)checked="checked"@endif>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="status">ステータス</label><br>
-                            {{ App\Models\Item::getStatusName(1);}}
-                            <input type="radio" name="status" value="1" @if($registered_item->status === 1)checked="checked"@endif>
-                            /{{ App\Models\Item::getStatusName(2);}}
-                            <input type="radio" name="status" value="2" @if($registered_item->status === 2)checked="checked"@endif>
+                            <label for="size">サイズ</label><br>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio01">{{ App\Models\Item::getSizeName(1);}}</label>
+                            <input type="radio" name="size" value="1" @if($registered_item->size === 1)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio02">{{ App\Models\Item::getSizeName(2);}}</label>
+                            <input type="radio" name="size" value="2" @if($registered_item->size === 2)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio03">{{ App\Models\Item::getSizeName(3);}}</label>
+                            <input type="radio" name="size" value="3" @if($registered_item->size === 3)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio04">{{ App\Models\Item::getSizeName(4);}}</label>
+                            <input type="radio" name="size" value="4" @if($registered_item->size === 4)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio05">{{ App\Models\Item::getSizeName(5);}}</label>
+                            <input type="radio" name="size" value="5" @if($registered_item->size === 5)checked="checked"@endif>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">カラー</label><br>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio01">{{ App\Models\Item::getColorName(1);}}</label>
+                            <input type="radio" name="color" value="1" @if($registered_item->color === 1)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio02">{{ App\Models\Item::getColorName(2);}}</label>
+                            <input type="radio" name="color" value="2" @if($registered_item->color === 2)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio03">{{ App\Models\Item::getColorName(3);}}</label>
+                            <input type="radio" name="color" value="3" @if($registered_item->color === 3)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio04">{{ App\Models\Item::getColorName(4);}}</label>
+                            <input type="radio" name="color" value="4" @if($registered_item->color === 4)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio05">{{ App\Models\Item::getColorName(5);}}</label>
+                            <input type="radio" name="color" value="5" @if($registered_item->color === 5)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio06">{{ App\Models\Item::getColorName(6);}}</label>
+                            <input type="radio" name="color" value="6" @if($registered_item->color === 6)checked="checked"@endif>
+                            </div>
+                            <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio07">{{ App\Models\Item::getColorName(7);}}</label>
+                            <input type="radio" name="color" value="7" @if($registered_item->color === 7)checked="checked"@endif>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="season">シーズン</label><br>
+                            <input class="form-control w-25" type="text" name="season" value="{{ $registered_item->season }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shop_id">店舗</label><br>
+                            <select name="shop_id" class="custom-select w-25">
+                                @foreach ($shop as $shops)
+                                    <option value="{{ $shops->id }}" {{ $shops->id == $registered_item->shop_id ? 'selected' : '' }}>
+                                        {{ $shops->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stock">在庫</label><br>
+                            <input class="form-control w-25" type="text" name="stock" value="{{ $registered_item->stock }}">
                         </div>
 
                     </div>

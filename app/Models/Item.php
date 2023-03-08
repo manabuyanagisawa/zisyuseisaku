@@ -48,6 +48,7 @@ class Item extends Model
         'brand',
         'wear_size',
         'color',
+        'season',
         'stock',
     ];
 

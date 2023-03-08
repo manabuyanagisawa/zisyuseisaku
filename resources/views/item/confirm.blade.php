@@ -60,6 +60,11 @@
                             <input type="hidden" name="color" value="{{ $inquiry['color'] }}">
                         </div>
                         <div class="form-group">
+                            <label for="season">シーズン</label><br>
+                            {{ $inquiry['season'] }}
+                            <input type="hidden" name="season" value="{{ $inquiry['season'] }}">
+                        </div>
+                        <div class="form-group">
                             <label for="shop_id">店舗名</label><br>
                             {{ $shop->name }}
                             <input type="hidden" name="shop_id" value="{{ $inquiry['shop_id'] }}">

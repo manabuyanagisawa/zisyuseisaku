@@ -25,12 +25,12 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">商品名</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="商品名" value="{{ old('name') }}">
+                            <input type="text" class="form-control w-50" id="name" name="name" placeholder="商品名" value="{{ old('name') }}">
                         </div>
 
                         <div class="form-group">
                             <label for="price">値段</label>
-                            <input type="text" class="form-control" id="price" name="price" placeholder="1000" value="{{ old('price') }}">
+                            <input type="text" class="form-control w-25" id="price" name="price" placeholder="1000" value="{{ old('price') }}">
                         </div>
 
                         <div class="form-group">
@@ -138,8 +138,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="season">シーズン</label><br>
+                            <input class="form-control w-25" type="text" name="season" value="{{ old('season') }}">
+                        </div>
+
+                        <div class="form-group">
                             <label for="shop_id">店舗</label><br>
-                            <select name="shop_id" class="custom-select">
+                            <select name="shop_id" class="custom-select w-25">
                             <option value="">選んでください</option>
                             @foreach($shops as $shop)
                             <option value="{{ $shop->id }}">{{ $shop->name }}</option>
@@ -149,7 +154,7 @@
 
                         <div class="form-group">
                             <label for="stock">在庫</label><br>
-                            <input class="form-control" type="text" name="stock" value="{{ old('stock') }}">
+                            <input class="form-control w-25" type="text" name="stock" value="{{ old('stock') }}">
                         </div>
 
                     </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
@@ -80,7 +81,9 @@ class ItemController extends Controller
             'brand' => 'required',
             'shop_id' => 'required',
             'wear_size' => 'integer',
-            'stock' => 'integer'
+            'stock' => 'integer',
+            'color' => 'required|integer',
+            'season' => 'required|max:4'
         ]);
         $inquiry = $request->all();
         $shop = Shop::find($inquiry['shop_id']);
@@ -106,7 +109,8 @@ class ItemController extends Controller
                 'shop_id' => $request->shop_id,
                 'wear_size' => $request->wear_size,
                 'color' => $request->color,
-                'stock' => $request->stock
+                'stock' => $request->stock,
+                'season' => $request->season
             ]);
             return redirect('/items/thanks');
     }}
@@ -118,8 +122,13 @@ class ItemController extends Controller
 
     // ⑤商品の詳細画面へ遷移
     public function detail($id){
-        $registered_item =Item::find($id);
-        return view('item.detail',compact('registered_item'));
+        $registered_item = Item::find($id);
+        $shop = Shop::all();
+        $user_id = $registered_item->user_id;
+        $registered_user = User::find($user_id);
+        $update_user_id = $registered_item->update_user_id;
+        $update_user = User::find($update_user_id);
+        return view('item.detail',compact('registered_item','shop','registered_user','update_user'));
     }
 
     // ⑥更新機能 更新後にホーム画面に遷移
@@ -129,12 +138,22 @@ class ItemController extends Controller
             'price' => 'required|integer',
             'type' => 'required',
             'brand' => 'required',
+            'shop_id' => 'required',
+            'wear_size' => 'integer',
+            'stock' => 'integer',
+            'color' => 'required|integer',
+            'season' => 'required|max:4'
         ]);
         Item::find($id)->update([
             'name' => $request->name,
-            'price'  => $request->price,
-            'type'  => $request->type,
+            'price' => $request->price,
+            'type' => $request->type,
             'brand' => $request->brand,
+            'shop_id' => $request->shop_id,
+            'wear_size' => $request->wear_size,
+            'color' => $request->color,
+            'stock' => $request->stock,
+            'season' => $request->season,
             'update_user_id' => Auth::id(),
             ]);
             return redirect()->route('home');
