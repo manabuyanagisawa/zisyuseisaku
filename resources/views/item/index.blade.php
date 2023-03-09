@@ -116,6 +116,7 @@
                                 <th>店舗</th>
                                 <th>在庫</th>
                                 @if($user_role === 2)<th>更新</th>@endif 
+                                <th>客注処理</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -132,6 +133,7 @@
                                     <td>{{ $shop_names[$item->shop_id] ?? '-' }}</td>
                                     <td>@if(!empty($item->stock))在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
                                     @if($user_role === 2)<td><a href="{{ route('item.detail', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新</a></td>@endif
+                                    <td><a href="{{ route('oder.add', ['id'=>$item->id]) }}" class="btn-sm btn-success">客注</a></td>
                                 </tr>
                             @endforeach
                         @endif
