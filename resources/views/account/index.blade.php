@@ -50,7 +50,8 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ App\Models\User::getRoleName($user->role);}}</td>
+                                    <td>@if($user->role === 2)<h6><span class="badge rounded-pill bg-success text-dark">{{ App\Models\User::getRoleName($user->role);}}</span></h6>
+                                    @elseif($user->role === 1)<span class="badge rounded-pill bg-info text-dark">{{ App\Models\User::getRoleName($user->role);}}</span>@endif</td>
                                     <td><a href="{{ route('account.detail', ['id'=>$user->id]) }}" class="btn-sm btn-dark">更新</a></td>
                                 </tr>
                             @endforeach

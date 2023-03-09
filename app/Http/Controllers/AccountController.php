@@ -29,4 +29,26 @@ class AccountController extends Controller
         $registered_user = User::find($id);
         return view('account.detail',compact('registered_user'));
     }
+
+    // ③ユーザーの更新機能 更新後、ホーム画面へ遷移
+    public function update(Request $request,$id){
+        $request->validate([
+            'name' => 'required|max:100',
+            'email' => 'required',
+            'role' => 'required',
+        ]);
+        User::find($id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            ]);
+            return redirect()->route('home');
+    }
+
+    /// ④ユーザーの削除機能 削除後、ホーム画面へ遷移する
+    public function delete($id){
+        $delete_user = User::find($id);
+        $delete_user->delete();
+        return redirect()->route('home');
+    }
 }
