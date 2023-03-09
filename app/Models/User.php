@@ -12,6 +12,12 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    public static function getRoleName($role_id){
+        $roles = config('role.roles');
+        return $roles[$role_id];
+    }
+
     /**
      * The attributes that are mass assignable.
      *

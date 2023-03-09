@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">店舗名</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="店舗名">
+                            <input type="text" class="form-control w-50" id="name" name="name" placeholder="店舗名">
                         </div>
                     </div>
             </div>

@@ -28,12 +28,17 @@ class ItemController extends Controller
     {
         $user_id = Auth::user();
         $user_role = $user_id->role;
+        $shops = Shop::all();
+        // 店舗の ID をキーにした配列を作成する
+        $shop_names = $shops->pluck('name', 'id')->toArray();
 
         // 商品一覧取得
         $keyword = $request->input('keyword');
         $type = $request->input('type');
         $brand = $request->input('brand');
         $stock = $request->input('stock');
+        $season= $request->input('season');
+        $shop= $request->input('shop');
         
         // 商品名検索
         $query = Item::query();
@@ -48,7 +53,15 @@ class ItemController extends Controller
         if(!is_null($brand)) {
         $query->where('brand', $brand);
         }
-
+        //シーズン検索
+        if(!is_null($season)) {
+        $query->where('season', $season);
+        }
+        //店舗検索
+        if(!is_null($shop)) {
+            $query->where('shop', $shop);
+        }
+            
         // 在庫の状態に応じて、クエリを組み立てる
         if(!is_null($stock)) {
         $query = DB::table('items');
@@ -62,7 +75,18 @@ class ItemController extends Controller
         // withQueryStringを使って検索後のページネーション
         $search_items = $query->paginate(10)->withQueryString();
         $items = Item::all();
-        return view('item.index', compact('items','search_items','keyword','type','brand','stock','user_role'));
+        return view('item.index', compact(
+            'items',
+            'search_items',
+            'keyword',
+            'type',
+            'brand',
+            'stock',
+            'season',
+            'user_role',
+            'shop_names',
+            'shop'
+        ));
     }
 
 

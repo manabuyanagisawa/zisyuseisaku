@@ -11,36 +11,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
+                <div class="row">
+                <div class="col-md-1">
                     <h3 class="card-title">商品一覧<span class="text-success">@if($user_role === 2):管理者@endif</span></h3>
-                    <div class="input-group row d-flex justify-content-center">
+                </div>
+                <div class="col-md-1">
                     <div class="input-group-append">
-                    <form action="{{ route('item.index') }}" method="GET">
-                            <input type="text" name="keyword" value="{{ $keyword }}" placeholder="商品名検索" class="col-auto">
-                            <select name="type" value="{{ $type }}" data-toggle="select" class="col-auto form-select">
-                                <option value="">アイテム別</option>
-                                <option value="1">シューズ</option>
-                                <option value="2">ボール</option>
-                                <option value="3">ウェア</option>
-                                <option value="4">バッグ</option>
-                                <option value="5">アクセサリー</option>
-                            </select>
-                            <select name="brand" value="{{ $brand }}" data-toggle="select" class="col-auto">
-                                <option value="">ブランド別</option>
-                                <option value="1">NIKE</option>
-                                <option value="2">asics</option>
-                                <option value="3">adidas</option>
-                                <option value="4">NewBlance</option>
-                                <option value="5">その他</option>
-                            </select>
-                            <select name="stock" data-toggle="select" class="col-auto">
-                                <option value="">在庫の有無</option>
-                                <option value="true">在庫あり</option>
-                                <option value="0">欠品中</option>
-                            </select>
-                            <button type="submit" class="btn btn-default" name="search_button">検索</button>
-                        </form>
-                        </div>
-                        </div>
                     @if($user_role === 2)
                     <div class="card-tools">
                         <div class="input-group input-group-sm">
@@ -51,6 +27,77 @@
                     </div>
                     @endif
                 </div>
+                </div>
+                </div><br>
+                    <form action="{{ route('item.index') }}" method="GET">
+                    <div class="justify-content-center row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                            <input type="text" name="keyword" value="{{ $keyword }}" placeholder="商品名検索" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                            <select name="type" value="{{ $type }}" data-toggle="select" class="custom-select">
+                                <option value="">アイテム</option>
+                                <option value="1">シューズ</option>
+                                <option value="2">ボール</option>
+                                <option value="3">ウェア</option>
+                                <option value="4">バッグ</option>
+                                <option value="5">アクセサリー</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                            <select name="brand" value="{{ $brand }}" data-toggle="select" class="custom-select">
+                                <option value="">ブランド</option>
+                                <option value="1">NIKE</option>
+                                <option value="2">asics</option>
+                                <option value="3">adidas</option>
+                                <option value="4">NewBlance</option>
+                                <option value="5">その他</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                            <select name="season" data-toggle="select" class="custom-select">
+                                <option value="">シーズン</option>
+                                <!-- 重複した内容は非表示 -->
+                                @foreach($items->pluck('season')->unique() as $season)
+                                <option value="{{ $season }}">{{ $season }}</option>
+                                @endforeach
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                            <select name="shop_id" data-toggle="select" class="custom-select">
+                                <option value="">店舗</option>
+                                <!-- 重複した内容は非表示 -->
+                                @foreach($items->pluck('shop_id')->unique() as $shop_id)
+                                <option value="{{ $shop_id }}">{{ $shop_names[$shop_id] ?? '-' }}</option>
+                                @endforeach
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                            <select name="stock" data-toggle="select" class="custom-select">
+                                <option value="">在庫</option>
+                                <option value="true">在庫あり</option>
+                                <option value="0">欠品中</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                            <button type="submit" class="btn btn-default" name="search_button">検索</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
@@ -66,6 +113,7 @@
                                 <th>サイズ</th>
                                 <th>カラー</th>
                                 <th>シーズン</th>
+                                <th>店舗</th>
                                 <th>在庫</th>
                                 @if($user_role === 2)<th>更新</th>@endif 
                             </tr>
@@ -81,6 +129,7 @@
                                     <td>@if(!empty($item->wear_size)){{ App\Models\Item::getSizeName($item->wear_size);}}@else - @endif</td>
                                     <td>{{ App\Models\Item::getColorName($item->color);}}</td>
                                     <td>{{ $item->season }}</td>
+                                    <td>{{ $shop_names[$item->shop_id] ?? '-' }}</td>
                                     <td>@if(!empty($item->stock))在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
                                     @if($user_role === 2)<td><a href="{{ route('item.detail', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新</a></td>@endif
                                 </tr>
@@ -91,7 +140,6 @@
                     <br>
                     <div class="d-flex justify-content-center">{{ $search_items->links('pagination::bootstrap-4') }}</div>
                 </div>
-            </div>
         </div>
     </div>
 @stop

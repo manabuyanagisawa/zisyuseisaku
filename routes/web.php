@@ -36,3 +36,14 @@ Route::group(['middleware' => 'can:admin' , 'prefix' => 'shops' , 'as' => 'shop.
     // ③登録完了画面の表示
     Route::get('/thanks', [App\Http\Controllers\ShopController::class, 'showThanks'])->name('showThanks');
 });
+
+Route::group(['middleware' => 'can:admin' , 'prefix' => 'accounts' , 'as' => 'account.'], function () {
+    // ①ユーザー一覧画面表示
+    Route::get('/', [App\Http\Controllers\AccountController::class, 'index'])->name('index');
+    // ②ユーザーの更新画面へ遷移
+    Route::get('/{id}', [App\Http\Controllers\AccountController::class, 'detail'])->name('detail');
+    // ③ユーザーの更新機能 更新後、ホーム画面へ遷移
+    Route::post('/{id}', [App\Http\Controllers\AccountController::class, 'update'])->name('update');
+    // ④ユーザーの削除機能 削除後、ホーム画面へ遷移する
+    Route::post('/{id}/delete', [App\Http\Controllers\AccountController::class, 'delete'])->name('delete');
+});

@@ -231,6 +231,13 @@ return [
             'icon' => 'fas fa-globe',
         ],
         
+
+        [
+            'text' => '利用者一覧',
+            'url'  => 'accounts',
+            'icon' => 'fas fa-globe',
+        ],
+
         [
             'text' => '店舗登録',
             'url'  => 'shops/add',
