@@ -16,20 +16,31 @@ class OrderController extends Controller
         return view('order.add',compact('move_item'));
     }
 
-    // ②客注機能
-    public function move(Request $request,$id){
-        $move_item = Item::find($id);
-        $get_shop_id = $move_item->shop_id;
+    // ②客注機能A(商品発送の店舗)
+    public function lost(Request $request,$id){
+        $request->validate([
+            'stock' => 'integer',
+        ]);
+        Item::find($id)->update([
+            'stock' => $request->stock,
+        ]);
+        return redirect()->route('order.get');
+    }
+
+    // ③客注機能B(商品受け取りの店舗)
+    public function get(Request $request,$id){
+        $get_item = Item::find($id);
+        $get_shop_id = $get_item->shop_id;
         $get_shop_name = Shop::find($get_shop_id)->name;
     
-        $item_name = $move_item->name;
-        $item_price = $move_item->price;
-        $item_type = $move_item->type;
-        $item_brand = $move_item->brand;
-        $item_shop_id = $move_item->shop_id;
-        $item_wear_size = $move_item->wear_size;
-        $item_color = $move_item->color;
-        $item_season = $move_item->season;
+        $item_name = $get_item->name;
+        $item_price = $get_item->price;
+        $item_type = $get_item->type;
+        $item_brand = $get_item->brand;
+        $item_shop_id = $get_item->shop_id;
+        $item_wear_size = $get_item->wear_size;
+        $item_color = $get_item->color;
+        $item_season = $get_item->season;
     
         if(isset($get_shop_name)){
             $request->validate([
