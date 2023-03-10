@@ -10,8 +10,8 @@ Route::group(['prefix' => 'items' , 'as' => 'item.'], function () {
     Route::get('/', [App\Http\Controllers\ItemController::class, 'index'])->name('index');
 });
 
-Route::group(['prefix' => 'oder' , 'as' => 'oder.'], function () {
-    Route::get('/{id}', [App\Http\Controllers\OderController::class, 'add'])->name('add');
+Route::group(['prefix' => 'orders' , 'as' => 'order.'], function () {
+    Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'add'])->name('add');
 });
 
 // ↓管理者権限をもった人のみアクセス可能(roleが2の人のみ(AuthServiceProvider.phpにて設定済))

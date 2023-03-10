@@ -231,7 +231,7 @@ return [
             'icon' => 'fas fa-globe',
         ],
         
-
+// 下記の2つをuserのroleが2の人以外、非表示にしたい
         [
             'text' => '利用者一覧',
             'url'  => 'accounts',
