@@ -12,6 +12,7 @@ Route::group(['prefix' => 'items' , 'as' => 'item.'], function () {
 
 Route::group(['prefix' => 'orders' , 'as' => 'order.'], function () {
     Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'add'])->name('add');
+    Route::post('/{id}', [App\Http\Controllers\OrderController::class, 'move'])->name('move');
 });
 
 // ↓管理者権限をもった人のみアクセス可能(roleが2の人のみ(AuthServiceProvider.phpにて設定済))

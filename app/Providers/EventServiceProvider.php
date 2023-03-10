@@ -6,6 +6,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use Illuminate\Support\Facades\Auth;
+
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +30,10 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
+            if (Auth::user()->role === 1){
+            $event->menu->remove('shop');  
+            $event->menu->remove('account');           
+        }});
     }
 }
