@@ -10,11 +10,12 @@ Route::group(['prefix' => 'items' , 'as' => 'item.'], function () {
     Route::get('/', [App\Http\Controllers\ItemController::class, 'index'])->name('index');
 });
 
+// 客注システム
 Route::group(['prefix' => 'orders' , 'as' => 'order.'], function () {
-    Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'add'])->name('add');
-    Route::post('/{id}', [App\Http\Controllers\OrderController::class, 'lost'])->name('lost');
     Route::get('/get', [App\Http\Controllers\OrderController::class, 'getShow'])->name('getShow');
     Route::post('/get', [App\Http\Controllers\OrderController::class, 'get'])->name('get');
+    Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'add'])->name('add');
+    Route::post('/{id}', [App\Http\Controllers\OrderController::class, 'lost'])->name('lost');
 });
 
 // ↓管理者権限をもった人のみアクセス可能(roleが2の人のみ(AuthServiceProvider.phpにて設定済))

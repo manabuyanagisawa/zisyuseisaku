@@ -27,13 +27,21 @@
                             <label for="shop_id">店舗</label><br>
                             <select name="shop_id" class="custom-select w-25">
                             <option value="">選んでください</option>
-                            @foreach($shops as $shop)
-                            <option value="{{ $shop_names->id }}">{{ $shop_names->name }}</option>
+                            @foreach($shop_names as $shop_name => $name)
+                            <option value="{{ $shop_name }}">{{ $name }}</option>
                             @endforeach
                             </select>
+                            <input type="hidden" name="moveStock" value="{{ $move_stock }}">
+                            <input type="hidden" name="name" value="{{ $move_item->name }}">
+                            <input type="hidden" name="price" value="{{ $move_item->price }}">
+                            <input type="hidden" name="type" value="{{ $move_item->type }}">
+                            <input type="hidden" name="brand" value="{{ $move_item->brand }}">
+                            <input type="hidden" name="wear_size" value="{{ $move_item->wear_size }}">
+                            <input type="hidden" name="color" value="{{ $move_item->color }}">
+                            <input type="hidden" name="season" value="{{ $move_item->season }}">
                         </div>
                         <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">移動先選択</button>
+                        <button type="submit" class="btn btn-primary">完了</button>
                     </div>
                     </div>
                 </form>

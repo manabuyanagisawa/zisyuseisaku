@@ -49,59 +49,50 @@ class OrderController extends Controller
         Item::find($id)->update([
             'stock' => $new_stock
         ]);
-        return redirect()->route('order.getShow',compact('move_stock'));
+        return redirect()->route('order.getShow',compact('move_stock', 'id'))->with('stock', $move_stock)->with('item', $move_item);
     }
 
-    // ③客注画面の表示B
-    public function getShow(){
-        // 選択されたアイテムの情報を取得
-        $shops = Shop::all();
-        $shop_names = $shops->pluck('name', 'id')->toArray();
-        return view('order.get',compact('shop_names'));
+// ③客注画面の表示B
+public function getShow(){
+    // 選択されたアイテムの情報を取得
+    $shops = Shop::all();
+    $shop_names = $shops->pluck('name', 'id')->toArray() ?? [];
+
+    $move_item = session()->get('item');
+    $move_stock = session()->get('stock');
+
+    return view('order.get',compact('shop_names','move_item','move_stock'));
+}
+
+// ③客注機能B(商品受け取りの店舗)
+public function get(Request $request){
+    $shop_id = $request->input('shop_id');
+    $item = Item::where('shop_id', $shop_id)->first();
+    $moveStock = $request->input('moveStock');
+    if(isset($item->stock)){
+        $new_stock = $item->stock + $moveStock;
+    }else{
+        $new_stock = $moveStock;
     }
-
-    // ③客注機能B(商品受け取りの店舗)
-    public function get(Request $request,$id){
-        $shops = Shop::all();
-        $shop_names = $shops->pluck('name', 'id')->toArray();
-
-        $get_item = Item::find($id);
-        $get_shop_id = $get_item->shop_id;
-        $get_shop_name = Shop::find($get_shop_id)->name;
     
-        $item_name = $get_item->name;
-        $item_price = $get_item->price;
-        $item_type = $get_item->type;
-        $item_brand = $get_item->brand;
-        $item_shop_id = $get_item->shop_id;
-        $item_wear_size = $get_item->wear_size;
-        $item_color = $get_item->color;
-        $item_season = $get_item->season;
-    
-        if(isset($get_shop_name)){
-            $request->validate([
-                'stock' => 'integer',
-            ]);
-            Item::find($id)->update([
-                'stock' => $request->stock,
-            ]);
-        }else{
-            $request->validate([
-                'stock' => 'integer',
-            ]);
-            Item::create([
-                'user_id' => Auth::user()->id,
-                'name' => $item_name,
-                'price' => $item_price,
-                'type' => $item_type,
-                'brand' => $item_brand,
-                'shop_id' => $item_shop_id,
-                'wear_size' => $item_wear_size,
-                'color' => $item_color,
-                'stock' => $request->stock,
-                'season' => $item_season
-            ]);
-        }
-        return redirect()->route('home');
+    if($item){
+        $item->update([
+            'stock' => $new_stock,
+        ]);
+    }else{
+        Item::create([
+            'user_id' => Auth::user()->id,
+            'name' => $request->name,
+            'price' => $request->price,
+            'type' => $request->type,
+            'brand' => $request->brand,
+            'shop_id' => $request->shop_id,
+            'wear_size' => $request->wear_size,
+            'color' => $request->color,
+            'stock' => $new_stock,
+            'season' => $request->season
+        ]);
     }
+    return redirect()->route('home');
+}
 }
