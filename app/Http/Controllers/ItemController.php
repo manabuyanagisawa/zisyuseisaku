@@ -38,7 +38,7 @@ class ItemController extends Controller
         $brand = $request->input('brand');
         $stock = $request->input('stock');
         $season= $request->input('season');
-        $shop= $request->input('shop');
+        $shop_id= $request->input('shop_id');
         
         // 商品名検索
         $query = Item::query();
@@ -58,8 +58,8 @@ class ItemController extends Controller
         $query->where('season', $season);
         }
         //店舗検索
-        if(!is_null($shop)) {
-            $query->where('shop', $shop);
+        if(!is_null($shop_id)) {
+            $query->where('shop_id', $shop_id);
         }
             
         // 在庫の状態に応じて、クエリを組み立てる
@@ -85,7 +85,7 @@ class ItemController extends Controller
             'season',
             'user_role',
             'shop_names',
-            'shop'
+            'shop_id'
         ));
     }
 
