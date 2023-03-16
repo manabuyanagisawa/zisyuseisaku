@@ -70,7 +70,7 @@ class OrderController extends Controller
         $moveStock = $request->input('moveStock');
         $shop_id = $request->input('shop_id');
         $moveItemId = $request->input('moveItemId');
-        $get_item = Item::find($moveItemId)->where('shop_id', $shop_id)->first();
+        $get_item = Item::where('id', $moveItemId)->where('shop_id', $shop_id)->first();
         if($get_item !== null && $get_item->exists){
             $new_stock = $get_item->stock + $moveStock;
             $get_item->update([
