@@ -53,46 +53,42 @@ class OrderController extends Controller
     }
 
 // ③客注画面の表示B
-public function getShow(){
-    // 選択されたアイテムの情報を取得
-    $shops = Shop::all();
-    $shop_names = $shops->pluck('name', 'id')->toArray() ?? [];
+    public function getShow(){
+        // 選択されたアイテムの情報を取得
+        $shops = Shop::all();
+        $shop_names = $shops->pluck('name', 'id')->toArray() ?? [];
 
-    $move_item = session()->get('item');
-    $move_stock = session()->get('stock');
+        $move_item = session()->get('item');
+        $move_stock = session()->get('stock');
 
-    return view('order.get',compact('shop_names','move_item','move_stock'));
-}
+        return view('order.get',compact('shop_names','move_item','move_stock'));
+    }
 
 // ③客注機能B(商品受け取りの店舗)
-public function get(Request $request){
-    $shop_id = $request->input('shop_id');
-    $item = Item::where('shop_id', $shop_id)->first();
-    $moveStock = $request->input('moveStock');
-    if(isset($item->stock)){
-        $new_stock = $item->stock + $moveStock;
-    }else{
-        $new_stock = $moveStock;
+    public function get(Request $request){
+        $shop_id = $request->input('shop_id');
+        $item = Item::where('shop_id', $shop_id)->first();
+        $moveStock = $request->input('moveStock');
+        if(isset($item->stock)){
+            $new_stock = $item->stock + $moveStock;
+            $item->update([
+                'stock' => $new_stock,
+            ]);
+        }else{
+            $new_stock = $moveStock;
+            Item::create([
+                'user_id' => Auth::user()->id,
+                'name' => $request->name,
+                'price' => $request->price,
+                'type' => $request->type,
+                'brand' => $request->brand,
+                'shop_id' => $request->shop_id,
+                'wear_size' => $request->wear_size,
+                'color' => $request->color,
+                'stock' => $new_stock,
+                'season' => $request->season
+            ]);
+        }
+        return redirect()->route('home');
     }
-    
-    if($item){
-        $item->update([
-            'stock' => $new_stock,
-        ]);
-    }else{
-        Item::create([
-            'user_id' => Auth::user()->id,
-            'name' => $request->name,
-            'price' => $request->price,
-            'type' => $request->type,
-            'brand' => $request->brand,
-            'shop_id' => $request->shop_id,
-            'wear_size' => $request->wear_size,
-            'color' => $request->color,
-            'stock' => $new_stock,
-            'season' => $request->season
-        ]);
-    }
-    return redirect()->route('home');
-}
 }
