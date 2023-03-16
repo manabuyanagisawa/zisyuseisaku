@@ -31,6 +31,7 @@
                             <option value="{{ $shop_name }}">{{ $name }}</option>
                             @endforeach
                             </select>
+                            <input type="hidden" name="moveItemId" value="{{ $move_item_id }}">
                             <input type="hidden" name="moveStock" value="{{ $move_stock }}">
                             <input type="hidden" name="name" value="{{ $move_item->name }}">
                             <input type="hidden" name="price" value="{{ $move_item->price }}">
