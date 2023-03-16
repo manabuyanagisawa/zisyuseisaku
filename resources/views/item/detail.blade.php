@@ -95,23 +95,23 @@
                         <div class="form-group">
                             <label for="wear_size">サイズ</label><br>
                             <div class="form-check form-check-inline">
-                            <label class="form-check-label" for="inlineRadio01">{{ App\Models\Item::getwear_sizeName(1);}}</label>
+                            <label class="form-check-label" for="inlineRadio01">{{ App\Models\Item::getSizeName(1);}}</label>
                             <input type="radio" name="wear_size" value="1" @if($registered_item->wear_size === 1)checked="checked"@endif>
                             </div>
                             <div class="form-check form-check-inline">
-                            <label class="form-check-label" for="inlineRadio02">{{ App\Models\Item::getwear_sizeName(2);}}</label>
+                            <label class="form-check-label" for="inlineRadio02">{{ App\Models\Item::getSizeName(2);}}</label>
                             <input type="radio" name="wear_size" value="2" @if($registered_item->wear_size === 2)checked="checked"@endif>
                             </div>
                             <div class="form-check form-check-inline">
-                            <label class="form-check-label" for="inlineRadio03">{{ App\Models\Item::getwear_sizeName(3);}}</label>
+                            <label class="form-check-label" for="inlineRadio03">{{ App\Models\Item::getSizeName(3);}}</label>
                             <input type="radio" name="wear_size" value="3" @if($registered_item->wear_size === 3)checked="checked"@endif>
                             </div>
                             <div class="form-check form-check-inline">
-                            <label class="form-check-label" for="inlineRadio04">{{ App\Models\Item::getwear_sizeName(4);}}</label>
+                            <label class="form-check-label" for="inlineRadio04">{{ App\Models\Item::getSizeName(4);}}</label>
                             <input type="radio" name="wear_size" value="4" @if($registered_item->wear_size === 4)checked="checked"@endif>
                             </div>
                             <div class="form-check form-check-inline">
-                            <label class="form-check-label" for="inlineRadio05">{{ App\Models\Item::getwear_sizeName(5);}}</label>
+                            <label class="form-check-label" for="inlineRadio05">{{ App\Models\Item::getSizeName(5);}}</label>
                             <input type="radio" name="wear_size" value="5" @if($registered_item->wear_size === 5)checked="checked"@endif>
                             </div>
                         </div>
