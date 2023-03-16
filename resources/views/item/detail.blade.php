@@ -92,7 +92,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="wearSize">
                             <label for="wear_size">サイズ</label><br>
                             <div class="form-check form-check-inline">
                             <label class="form-check-label" for="inlineRadio01">{{ App\Models\Item::getSizeName(1);}}</label>
@@ -183,6 +183,32 @@
             </div>
         </div>
     </div>
+    
+    <script>
+function formSwitch() {
+    var status = document.getElementsByName('type');
+    if (status[2].checked) {
+        // ウェアが選択されたら下記を実行します
+        document.getElementById('wearSize').style.display = "";
+    } else {
+        // ウェアが選択されていない場合は非表示にします
+        document.getElementById('wearSize').style.display = "none";
+    }
+}
+
+// ページ読み込み時に実行
+window.addEventListener('load', function() {
+    // 初期状態をチェックして表示・非表示を切り替える
+    formSwitch();
+    
+    // ラジオボタンが変更された時に表示・非表示を切り替える
+    var status = document.getElementsByName('type');
+    for (var i = 0; i < status.length; i++) {
+        status[i].addEventListener('change', formSwitch);
+    }
+});
+</script>
+
 @stop
 
 @section('css')

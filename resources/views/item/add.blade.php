@@ -179,7 +179,17 @@ function formSwitch() {
     }
 }
 
-window.addEventListener('load', formSwitch);
+// ページ読み込み時に実行
+window.addEventListener('load', function() {
+    // 初期状態をチェックして表示・非表示を切り替える
+    formSwitch();
+    
+    // ラジオボタンが変更された時に表示・非表示を切り替える
+    var status = document.getElementsByName('type');
+    for (var i = 0; i < status.length; i++) {
+        status[i].addEventListener('change', formSwitch);
+    }
+});
 </script>
 
 @stop
