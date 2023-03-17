@@ -18,6 +18,13 @@ Route::group(['prefix' => 'orders' , 'as' => 'order.'], function () {
     Route::post('/{id}', [App\Http\Controllers\OrderController::class, 'lost'])->name('lost');
 });
 
+// 問い合わせ
+Route::group(['prefix' => 'contact' , 'as' => 'contact.'], function () {
+    Route::get('/', [App\Http\Controllers\ContactsController::class, 'index'])->name('index');
+    Route::post('/confirm', [App\Http\Controllers\ContactsController::class, 'confirm'])->name('confirm');
+    Route::post('/thanks', [App\Http\Controllers\ContactsController::class, 'send'])->name('send');
+});
+
 // ↓管理者権限をもった人のみアクセス可能(roleが2の人のみ(AuthServiceProvider.phpにて設定済))
 Route::group(['middleware' => 'can:admin' , 'prefix' => 'items' , 'as' => 'item.'], function () {
     // ①商品登録画面表示

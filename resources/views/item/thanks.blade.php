@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <p>商品の問い合わせはこちらから</p>
+    <p>商品の問い合わせは<a href="{{ route('contact.index') }}">こちら</a>から</p>
 @stop
 
 @section('css')

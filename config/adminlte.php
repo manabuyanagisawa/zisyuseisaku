@@ -245,6 +245,12 @@ return [
             'icon' => 'fas fa-globe',
         ],
 
+        [
+            'text' => '問い合わせ',
+            'url'  => 'contact',
+            'icon' => 'fas fa-globe',
+        ],
+
         // AdminLTEデフォルト
         /*
         // Navbar items:

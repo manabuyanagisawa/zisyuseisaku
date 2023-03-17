@@ -32,12 +32,12 @@
                     <form action="{{ route('item.index') }}" method="GET">
                     <div class="justify-content-center row">
                         <div class="col-md-2">
-                            <div class="form-group">
+                            <div class="input-group input-group-sm">
                             <input type="text" name="keyword" value="{{ $keyword }}" placeholder="商品名検索" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <div class="form-group">
+                            <div class="input-group input-group-sm">
                             <select name="type" value="{{ $type }}" data-toggle="select" class="custom-select">
                                 <option value="">アイテム</option>
                                 <option value="1">シューズ</option>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <div class="form-group">
+                            <div class="input-group input-group-sm">
                             <select name="brand" value="{{ $brand }}" data-toggle="select" class="custom-select">
                                 <option value="">ブランド</option>
                                 <option value="1">NIKE</option>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <div class="form-group">
+                            <div class="input-group input-group-sm">
                             <select name="season" data-toggle="select" class="custom-select">
                                 <option value="">シーズン</option>
                                 <!-- 重複した内容は非表示 -->
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <div class="form-group">
+                            <div class="input-group input-group-sm">
                             <select name="shop_id" data-toggle="select" class="custom-select">
                                 <option value="">店舗</option>
                                 <!-- 重複した内容は非表示 -->
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <div class="form-group">
+                            <div class="input-group input-group-sm">
                             <select name="stock" data-toggle="select" class="custom-select">
                                 <option value="">在庫</option>
                                 <option value="true">在庫あり</option>
@@ -92,8 +92,8 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <div class="form-group">
-                            <button type="submit" class="btn btn-default" name="search_button">検索</button>
+                            <div class="input-group">
+                            <button type="submit" class="btn btn-sm btn-default" name="search_button">検索</button>
                             </div>
                         </div>
                     </div>
