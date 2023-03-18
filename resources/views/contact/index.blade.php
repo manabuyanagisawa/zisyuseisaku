@@ -28,7 +28,7 @@
                                 <select name="shop" class="custom-select w-25">
                                     <option value="">選んでください</option>
                                     @foreach($shop_names as $shop_name => $name)
-                                    <option value="{{ $shop_name }}">{{ $name }}</option>
+                                    <option value="{{ $shop_name }}"@if($shop_name === (int)old('shop')) selected @endif >{{ $name }}</option>>
                                     @endforeach
                                 </select>
                             </div>
