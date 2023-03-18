@@ -36,23 +36,14 @@
                             <label for="email">メールアドレス</label>
                             <input type="text" class="form-control w-50" id="email" name="email" placeholder="xxxx@ysballa.com" value="{{ old('email') }}">
                         </div>
-                        @if ($errors->has('email'))
-                        <p class="error-message">{{ $errors->first('email') }}</p>
-                        @endif
                         <div class="form-group">
                             <label for="title">タイトル</label>
                             <input type="text" class="form-control w-50" id="title" name="title" placeholder="新商品仕入れ希望" value="{{ old('title') }}">
                         </div>
-                        @if ($errors->has('title'))
-                        <p class="error-message">{{ $errors->first('title') }}</p>
-                        @endif
                         <div class="form-group">
                             <label for="body">内容</label>
                             <textarea type="text" class="form-control w-50" id="body" name="body" placeholder="ジョーダンを仕入れたい etc">{{ old('body') }}</textarea>
                         </div>
-                        @if ($errors->has('body'))
-                        <p class="error-message">{{ $errors->first('body') }}</p>
-                        @endif
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">内容確認</button>

@@ -17,6 +17,10 @@ class ShopController extends Controller
     public function store(Request $request){
         $request->validate([
             'name' => 'required|max:100',
+        ],
+        [
+            'name.required' => '店舗名は必ず入力してください。',
+            'name.max' => '文字数制限を超えています。'
         ]);
         Shop::create([
             'name' => $request->name,

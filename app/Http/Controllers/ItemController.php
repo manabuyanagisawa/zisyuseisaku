@@ -108,6 +108,18 @@ class ItemController extends Controller
             'stock' => 'integer',
             'color' => 'required|integer',
             'season' => 'required|max:4'
+        ],
+        [
+            'name.required' => '名前は必ず入力してください。',
+            'name.max' => '文字数制限を超えています。',            
+            'price.required' => '値段は必ず入力してください。',
+            'price.integer' => '値段は必ず整数で入力してください。',
+            'type.required' => '種別は必ず選択してください。',
+            'brand.required' => 'ブランドは必ず選択してください。',
+            'shop_id.required' => '店舗名は必ず選択してください。',
+            'stock.integer' => '在庫数は必ず整数で入力してください。',
+            'season.required' => 'シーズンは必ず選択してください。',
+            'season.max' => '文字数制限を超えています。4文字以内で例のように入力してください。(例:23SS)',
         ]);
         $inquiry = $request->all();
         $shop = Shop::find($inquiry['shop_id']);
@@ -167,6 +179,18 @@ class ItemController extends Controller
             'stock' => 'integer',
             'color' => 'required|integer',
             'season' => 'required|max:4'
+        ],
+        [
+            'name.required' => '名前は必ず入力してください。',
+            'name.max' => '文字数制限を超えています。',            
+            'price.required' => '値段は必ず入力してください。',
+            'price.integer' => '値段は必ず整数で入力してください。',
+            'type.required' => '種別は必ず選択してください。',
+            'brand.required' => 'ブランドは必ず選択してください。',
+            'shop_id.required' => '店舗名は必ず選択してください。',
+            'stock.integer' => '在庫数は必ず整数で入力してください。',
+            'season.required' => 'シーズンは必ず選択してください。',
+            'season.max' => '文字数制限を超えています。4文字以内で例のように入力してください。(例:23SS)',
         ]);
         Item::find($id)->update([
             'name' => $request->name,

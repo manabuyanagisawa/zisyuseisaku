@@ -36,6 +36,12 @@ class AccountController extends Controller
             'name' => 'required|max:100',
             'email' => 'required',
             'role' => 'required',
+        ],
+        [
+            'name.required' => '名前は必ず入力してください。',
+            'name.max' => '文字数制限を超えています。',
+            'email.required' => 'アドレスは必ず入力してください。',
+            'role.required' => '権限は必ず入力してください。',
         ]);
         User::find($id)->update([
             'name' => $request->name,

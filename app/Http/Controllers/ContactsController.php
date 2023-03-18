@@ -21,6 +21,12 @@ class ContactsController extends Controller
     'email' => 'required|email',
     'title' => 'required',
     'body' => 'required',
+    ],
+    [
+        'shop.required' => '店舗名は必ず選択してください。',
+        'email.required' => 'アドレスは必ず入力してください。',
+        'title.required' => 'タイトルは必ず入力してください。',
+        'body.required' => '内容は必ず入力してください。'
     ]);
 
     $inputs = $request->all();
@@ -31,14 +37,6 @@ class ContactsController extends Controller
 
 public function send(Request $request)
 {
-    // バリデーション
-    $request->validate([
-    'shop' => 'required',
-    'email' => 'required|email',
-    'title' => 'required',
-    'body' => 'required'
-    ]);
-
     // actionの値を取得
     $action = $request->input('action');
 

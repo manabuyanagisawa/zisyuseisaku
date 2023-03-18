@@ -44,7 +44,10 @@ class OrderController extends Controller
         }
         
         $request->validate([
-            'stock' => 'integer',
+            'stock' => 'required|integer',
+        ],
+        [
+            'stock.required' => '移動数は必ず入力してください'
         ]);
         Item::find($id)->update([
             'stock' => $new_stock
