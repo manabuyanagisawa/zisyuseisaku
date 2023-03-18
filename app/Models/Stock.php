@@ -4,24 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Item;
 
-class Shop extends Model
+class Stock extends Model
 {
     use HasFactory;
 
-    protected $table = 'shops';
+    protected $table = 'stocks';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
-        'name',
+        'item_id',
+        'shop_id',
+        'stock_quantity',
     ];
 
-    public function items()
+    public function item()
     {
-        return $this->belongsToMany(Item::class, 'stock');
+        return $this->belongsTo(Item::class);
     }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
 }

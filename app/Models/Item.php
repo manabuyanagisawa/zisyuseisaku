@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Shop;
 
 class Item extends Model
 {
@@ -41,7 +42,6 @@ class Item extends Model
     protected $fillable = [
         'user_id',
         'update_user_id',
-        'shop_id',
         'price',
         'name',
         'type',
@@ -49,8 +49,12 @@ class Item extends Model
         'wear_size',
         'color',
         'season',
-        'stock',
     ];
+
+    public function shops()
+    {
+        return $this->belongsToMany(Shop::class, 'stock');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
