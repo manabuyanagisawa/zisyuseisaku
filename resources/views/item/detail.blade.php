@@ -152,6 +152,42 @@
                             <label for="season">シーズン</label><br>
                             <input class="form-control w-25" type="text" name="season" value="{{ $registered_item->season }}">
                         </div>
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">更新</button>
+                    </div>
+                </form>
+                <div class="card-footer">
+                        <form method="POST" action="{{ route('item.delete', ['id' => $registered_item->id]) }}" onsubmit="return confirm('本当に削除しますか？')">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">削除</button>
+                        </form>
+                        </div>
+                        @if($inventories === null)
+                        <p class="text-center pt-5">在庫がありません。</p>
+                        @else
+                            <tr>
+                                <th>商品名</th>
+                                <th>店舗名</th>
+                                <th>在庫数</th>
+                                <th>在庫管理</th>
+                                <th>客注処理</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($inventories as $inventory)
+                                <tr>
+                                    <td>{{ $inventory->item->name }}</td>
+                                    <td>{{ $inventory->shop->name }}</td>
+                                    <td>{{ $inventory->stock }}</td>
+                                    @if($user_role === 2)<td><a href="" class="btn-sm btn-dark">在庫管理</a></td>@endif
+                                    <td>@if(!empty($item->stock))<a href="" class="btn-sm btn-success">客注処理</a>@else - @endif</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="d-flex justify-content-center">{{ $search_items->links('pagination::bootstrap-4') }}</div>
 
                         <div class="form-group">
                             <label for="shop_id">店舗</label><br>
@@ -169,16 +205,6 @@
                         </div>
 
                     </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">更新</button>
-                    </div>
-                </form>
-                <div class="card-footer">
-                        <form method="POST" action="{{ route('item.delete', ['id' => $registered_item->id]) }}" onsubmit="return confirm('本当に削除しますか？')">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">削除</button>
-                        </form>
-                        </div>
                     </div>
             </div>
         </div>

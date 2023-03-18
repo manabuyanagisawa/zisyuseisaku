@@ -142,21 +142,6 @@
                             <input class="form-control w-25" type="text" name="season" value="{{ old('season') }}">
                         </div>
 
-                        <div class="form-group">
-                            <label for="shop_id">店舗</label><br>
-                            <select name="shop_id" class="custom-select w-25">
-                            <option value="">選んでください</option>
-                            @foreach($shops as $shop)
-                            <option value="{{ $shop->id }}" @if($shop->id === (int)old('shop_id')) selected @endif >{{ $shop->name }}</option>
-                            @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="stock">在庫</label><br>
-                            <input class="form-control w-25" type="text" name="stock" value="{{ old('stock') }}">
-                        </div>
-
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">登録内容確認</button>

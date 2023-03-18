@@ -64,16 +64,6 @@
                             {{ $inquiry['season'] }}
                             <input type="hidden" name="season" value="{{ $inquiry['season'] }}">
                         </div>
-                        <div class="form-group">
-                            <label for="shop_id">店舗名</label><br>
-                            {{ $shop->name }}
-                            <input type="hidden" name="shop_id" value="{{ $inquiry['shop_id'] }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="stock">在庫数</label><br>
-                            {{ $inquiry['stock'] }}個/枚
-                            <input type="hidden" name="stock" value="{{ $inquiry['stock'] }}">
-                        </div>
                     </div>
                     </div>
                     <div class="card-footer">

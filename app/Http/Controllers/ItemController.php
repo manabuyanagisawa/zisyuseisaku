@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Shop;
 use App\Models\User;
+use App\Models\Stock;
 use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
@@ -36,9 +37,7 @@ class ItemController extends Controller
         $keyword = $request->input('keyword');
         $type = $request->input('type');
         $brand = $request->input('brand');
-        $stock = $request->input('stock');
         $season= $request->input('season');
-        $shop_id= $request->input('shop_id');
         
         // 商品名検索
         $query = Item::query();
@@ -57,19 +56,7 @@ class ItemController extends Controller
         if(!is_null($season)) {
         $query->where('season', $season);
         }
-        //店舗検索
-        if(!is_null($shop_id)) {
-            $query->where('shop_id', $shop_id);
-        }
             
-        // 在庫の状態に応じて、クエリを組み立てる
-        if(!is_null($stock)) {
-        $query = DB::table('items');
-        if ($stock == 'true') {
-            $query->where('stock', '>', 0); // 在庫あり
-        } elseif ($stock == '0') {
-            $query->where('stock', '=', 0); // 欠品中
-        }}
 
         // ページネーション設定 (10)は一度に表示する数
         // withQueryStringを使って検索後のページネーション
@@ -81,11 +68,9 @@ class ItemController extends Controller
             'keyword',
             'type',
             'brand',
-            'stock',
             'season',
             'user_role',
             'shop_names',
-            'shop_id'
         ));
     }
 
@@ -103,9 +88,7 @@ class ItemController extends Controller
             'price' => 'required|integer',
             'type' => 'required',
             'brand' => 'required',
-            'shop_id' => 'required',
             'wear_size' => 'integer',
-            'stock' => 'integer',
             'color' => 'required|integer',
             'season' => 'required|max:4'
         ],
@@ -116,14 +99,11 @@ class ItemController extends Controller
             'price.integer' => '値段は必ず整数で入力してください。',
             'type.required' => '種別は必ず選択してください。',
             'brand.required' => 'ブランドは必ず選択してください。',
-            'shop_id.required' => '店舗名は必ず選択してください。',
-            'stock.integer' => '在庫数は必ず整数で入力してください。',
             'season.required' => 'シーズンは必ず選択してください。',
             'season.max' => '文字数制限を超えています。4文字以内で例のように入力してください。(例:23SS)',
         ]);
         $inquiry = $request->all();
-        $shop = Shop::find($inquiry['shop_id']);
-        return view('item.confirm',compact('inquiry','shop'));
+        return view('item.confirm',compact('inquiry'));
     }
 
     // ③登録画面へ戻るor登録完了画面へ遷移
@@ -142,10 +122,8 @@ class ItemController extends Controller
                 'price' => $request->price,
                 'type' => $request->type,
                 'brand' => $request->brand,
-                'shop_id' => $request->shop_id,
                 'wear_size' => $request->wear_size,
                 'color' => $request->color,
-                'stock' => $request->stock,
                 'season' => $request->season
             ]);
             return redirect('/items/thanks');
@@ -164,7 +142,8 @@ class ItemController extends Controller
         $registered_user = User::find($user_id);
         $update_user_id = $registered_item->update_user_id;
         $update_user = User::find($update_user_id);
-        return view('item.detail',compact('registered_item','shop','registered_user','update_user'));
+        $inventories = Stock::where('item_id', $registered_item->id)->get();
+        return view('item.detail',compact('registered_item','shop','registered_user','update_user','inventories'));
     }
 
     // ⑥更新機能 更新後にホーム画面に遷移
@@ -174,9 +153,7 @@ class ItemController extends Controller
             'price' => 'required|integer',
             'type' => 'required',
             'brand' => 'required',
-            'shop_id' => 'required',
             'wear_size' => 'integer',
-            'stock' => 'integer',
             'color' => 'required|integer',
             'season' => 'required|max:4'
         ],
@@ -187,8 +164,6 @@ class ItemController extends Controller
             'price.integer' => '値段は必ず整数で入力してください。',
             'type.required' => '種別は必ず選択してください。',
             'brand.required' => 'ブランドは必ず選択してください。',
-            'shop_id.required' => '店舗名は必ず選択してください。',
-            'stock.integer' => '在庫数は必ず整数で入力してください。',
             'season.required' => 'シーズンは必ず選択してください。',
             'season.max' => '文字数制限を超えています。4文字以内で例のように入力してください。(例:23SS)',
         ]);
@@ -197,10 +172,8 @@ class ItemController extends Controller
             'price' => $request->price,
             'type' => $request->type,
             'brand' => $request->brand,
-            'shop_id' => $request->shop_id,
             'wear_size' => $request->wear_size,
             'color' => $request->color,
-            'stock' => $request->stock,
             'season' => $request->season,
             'update_user_id' => Auth::id(),
             ]);

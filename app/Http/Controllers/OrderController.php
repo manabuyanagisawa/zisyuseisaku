@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Shop;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\MoveItemRequest;
 
 class OrderController extends Controller
 {
@@ -15,71 +16,49 @@ class OrderController extends Controller
         $this->middleware('auth');
     }
 
-    // ①客注画面の表示A
+    // ①選択した商品の移動数入力画面の表示
     public function add($id){
         // 選択されたアイテムの情報を取得
         $move_item = Item::find($id);
-        $shops = Shop::all();
-        $shop_names = $shops->pluck('name', 'id')->toArray();
-        return view('order.add',compact('move_item','shop_names'));
+        return view('order.add',compact('move_item'));
     }
 
-    // ②客注機能A(商品発送の店舗)
-    public function lost(Request $request,$id){
-        $move_item = Item::find($id);
+    // ②商品が移動されるメソッド(移動される分、在庫数を減らす仕組み)
+    public function lost(MoveItemRequest $request,$id){
+        $item = Item::find($id);
         $move_stock = $request->input('move_stock');
         
-        // -1などのマイナスの数値を入力された場合のエラー
-        if ($move_stock < 0) {
-            $errorMessage = '0以上の数にて、もう一度お試しください。';
-            return redirect()->back()->withErrors([$errorMessage]);
-        }
-
-        $new_stock = $move_item->stock - $move_stock;
-
-        // 在庫がマイナスになってしまう場合のエラー
-        if ($new_stock < 0) {
-            $errorMessage = '在庫がマイナスになります。数を減らしてください。';
-            return redirect()->back()->withErrors([$errorMessage]);
-        }
-        
-        $request->validate([
-            'stock' => 'required|integer',
-        ],
-        [
-            'stock.required' => '移動数は必ず入力してください'
-        ]);
-        Item::find($id)->update([
-            'stock' => $new_stock
-        ]);
-        return redirect()->route('order.getShow',compact('move_stock', 'id'))->with('stock', $move_stock)->with('item', $move_item);
+        return redirect()->route('order.getShow')->with('item',$item)->with('stock',$move_stock);
     }
 
-// ③客注画面の表示B
+    // ③移動先選択画面の表示
     public function getShow(){
         // 選択されたアイテムの情報を取得
         $shops = Shop::all();
-        $shop_names = $shops->pluck('name', 'id')->toArray() ?? [];
 
         $move_item = session()->get('item');
         $move_stock = session()->get('stock');
-        $move_item_id = $move_item->id;
 
-        return view('order.get',compact('shop_names','move_item','move_stock','move_item_id'));
+        return view('order.get',compact('shops','move_item','move_stock'));
     }
 
-// ③客注機能B(商品受け取りの店舗)
+    // ④移動先にアイテムを渡す
     public function get(Request $request){
         $moveStock = $request->input('moveStock');
-        $shop_id = $request->input('shop_id');
         $moveItemId = $request->input('moveItemId');
-        $get_item = Item::where('id', $moveItemId)->where('shop_id', $shop_id)->first();
-        if($get_item !== null && $get_item->exists){
-            $new_stock = $get_item->stock + $moveStock;
-            $get_item->update([
+
+        $shop_id = $request->input('shop_id');
+       
+        $move_item = Item::find($moveItemId);
+
+        // 商品の数を更新
+        if($move_item !== null && $move_item->exists){
+            $new_stock = $move_item->stock + $moveStock;
+            $move_item->update([
                 'stock' => $new_stock,
+                'shop_id'=>$shop_id
             ]);
-        }elseif($get_item === null){
+        }elseif($move_item === null){
             $new_stock = $moveStock;
             Item::create([
                 'user_id' => Auth::user()->id,
@@ -94,6 +73,14 @@ class OrderController extends Controller
                 'season' => $request->season
             ]);
         }
+        if($request->shop_id === $shop_id){
+            return redirect()->route('order.cancelShow');
+        }
         return redirect()->route('home');
+    }
+
+    // ⑤上のpostで客注キャンセルをした場合、キャンセル完了画面の表示
+    public function cancelShow(){
+        return view('order.cancel');
     }
 }

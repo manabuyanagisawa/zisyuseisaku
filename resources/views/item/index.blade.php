@@ -72,26 +72,6 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                            <div class="input-group input-group-sm">
-                            <select name="shop_id" data-toggle="select" class="custom-select">
-                                <option value="">店舗</option>
-                                <!-- 重複した内容は非表示 -->
-                                @foreach($items->pluck('shop_id')->unique() as $shop_id)
-                                <option value="{{ $shop_id }}">{{ $shop_names[$shop_id] ?? '-' }}</option>
-                                @endforeach
-                            </select>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="input-group input-group-sm">
-                            <select name="stock" data-toggle="select" class="custom-select">
-                                <option value="">在庫</option>
-                                <option value="true">在庫あり</option>
-                                <option value="0">欠品中</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
                             <div class="input-group">
                             <button type="submit" class="btn btn-sm btn-default" name="search_button">検索</button>
                             </div>
@@ -113,9 +93,7 @@
                                 <th>サイズ</th>
                                 <th>カラー</th>
                                 <th>シーズン</th>
-                                <th>店舗</th>
-                                <th>在庫</th>
-                                @if($user_role === 2)<th>更新</th>@endif 
+                                <th>更新・在庫管理</th>
                                 <th>客注処理</th>
                             </tr>
                         </thead>
@@ -130,9 +108,7 @@
                                     <td>@if(!empty($item->wear_size)){{ App\Models\Item::getSizeName($item->wear_size);}}@else - @endif</td>
                                     <td>{{ App\Models\Item::getColorName($item->color);}}</td>
                                     <td>{{ $item->season }}</td>
-                                    <td>{{ $shop_names[$item->shop_id] ?? '-' }}</td>
-                                    <td>@if(!empty($item->stock))在庫あり@else<div style="color:#ff0000">欠品中</div>@endif</td>
-                                    @if($user_role === 2)<td><a href="{{ route('item.detail', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新</a></td>@endif
+                                    @if($user_role === 2)<td><a href="{{ route('item.detail', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新・在庫管理</a></td>@endif
                                     <td>@if(!empty($item->stock))<a href="{{ route('order.add', ['id'=>$item->id]) }}" class="btn-sm btn-success">客注</a>@else - @endif</td>
                                 </tr>
                             @endforeach

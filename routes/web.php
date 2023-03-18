@@ -12,16 +12,25 @@ Route::group(['prefix' => 'items' , 'as' => 'item.'], function () {
 
 // 客注システム
 Route::group(['prefix' => 'orders' , 'as' => 'order.'], function () {
+    // ③移動先選択画面の表示
     Route::get('/get', [App\Http\Controllers\OrderController::class, 'getShow'])->name('getShow');
+    // ④移動先にアイテムを渡す
     Route::post('/get', [App\Http\Controllers\OrderController::class, 'get'])->name('get');
+    // ⑤上のpostで客注キャンセルをした場合、キャンセル完了画面へ遷移
+    Route::get('/cancel', [App\Http\Controllers\OrderController::class, 'cancelShow'])->name('cancelShow');
+    // ①選択した商品の移動数入力画面の表示
     Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'add'])->name('add');
-    Route::post('/{id}', [App\Http\Controllers\OrderController::class, 'lost'])->name('lost');
+    // ②商品が移動されるメソッド(移動される分、在庫数を減らす仕組み)
+    Route::post('{id}', [App\Http\Controllers\OrderController::class, 'lost'])->name('lost');
 });
 
 // 問い合わせ
 Route::group(['prefix' => 'contact' , 'as' => 'contact.'], function () {
+    // ①問い合わせ画面表示
     Route::get('/', [App\Http\Controllers\ContactsController::class, 'index'])->name('index');
+    // ②内容をpostし、入力内容確認画面へ遷移
     Route::post('/confirm', [App\Http\Controllers\ContactsController::class, 'confirm'])->name('confirm');
+    // ③問い合わせ内容を送信し、送信完了画面へ遷移
     Route::post('/thanks', [App\Http\Controllers\ContactsController::class, 'send'])->name('send');
 });
 

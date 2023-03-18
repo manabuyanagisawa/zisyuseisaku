@@ -3,7 +3,7 @@
 @section('title', '客注システム')
 
 @section('content_header')
-    <h1>客注システム/{{ $shop_names[$move_item->shop_id] }}</h1>
+    <h1>客注システム/{{ $move_item->shop->name }}</h1>
 @stop
 
 @section('content')
@@ -30,9 +30,10 @@
                     <label>サイズ:@if(!empty($move_item->wear_size)){{ App\Models\Item::getSizeName($move_item->wear_size);}}@else - @endif</label><br>
                     <label>カラー:{{ App\Models\Item::getColorName($move_item->color) }}</label><br>
                     <label>シーズン:{{ $move_item->season }}</label><br><br>
+                    <input type="hidden" name="shop" value="{{ $move_item->shop_id }}">
                         <div class="form-group">
                             <label for="stock">▼移動数</label><br>
-                            <input class="form-control w-25" type="text" name="move_stock" value="{{ old('move_stock') }}" placeholder="移動したい枚数を入力">
+                            <input class="form-control w-25" type="number" name="move_stock" value="{{ old('move_stock') }}" placeholder="移動したい枚数を入力" max={{$move_item->stock}}>
                         </div>
                         <div class="card-footer">
                         <button type="submit" class="btn btn-primary">移動店舗選択</button>
