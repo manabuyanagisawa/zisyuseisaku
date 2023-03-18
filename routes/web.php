@@ -21,7 +21,7 @@ Route::group(['prefix' => 'orders' , 'as' => 'order.'], function () {
     // ①選択した商品の移動数入力画面の表示
     Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'add'])->name('add');
     // ②商品が移動されるメソッド(移動される分、在庫数を減らす仕組み)
-    Route::post('{id}', [App\Http\Controllers\OrderController::class, 'lost'])->name('lost');
+    Route::post('/{id}', [App\Http\Controllers\OrderController::class, 'lost'])->name('lost');
 });
 
 // 問い合わせ
@@ -50,6 +50,7 @@ Route::group(['middleware' => 'can:admin' , 'prefix' => 'items' , 'as' => 'item.
     Route::post('/{id}', [App\Http\Controllers\ItemController::class, 'update'])->name('update');
     // ⑦商品の削除機能 削除後、ホーム画面へ遷移する
     Route::post('/{id}/delete', [App\Http\Controllers\ItemController::class, 'delete'])->name('delete');
+    Route::post('{id}/create-stock', [App\Http\Controllers\StockController::class, 'create'])->name('create-stock');
 });
 
 Route::group(['middleware' => 'can:admin' , 'prefix' => 'shops' , 'as' => 'shop.'], function () {

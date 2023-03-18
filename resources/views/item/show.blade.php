@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', '商品登録')
+@section('title', '商品詳細')
 
 @section('content_header')
 <h1>商品詳細</h1>
@@ -147,21 +147,40 @@
                             <input type="radio" name="color" value="7" @if($registered_item->color === 7)checked="checked"@endif>
                         </div>
                     </div>
-
+                    <div class="form-inline mb-3">
                     <div class="form-group">
                         <label for="season">シーズン</label><br>
-                        <input class="form-control w-25" type="text" name="season" value="{{ $registered_item->season }}">
+                        <input class="form-control mx-sm-3" type="text" name="season" value="{{ $registered_item->season }}">
                     </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">更新</button>
-                    </div>
+                    
+                        <button type="submit" class="btn btn-primary mr-2">更新</button>
             </form>
-            <div class="card-footer">
-                <form method="POST" action="{{ route('item.delete', ['id' => $registered_item->id]) }}" onsubmit="return confirm('本当に削除しますか？')">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">削除</button>
-                </form>
+            <form method="POST" action="{{ route('item.delete', ['id' => $registered_item->id]) }}" onsubmit="return confirm('本当に削除しますか？')">
+                @csrf
+                <button type="submit" class="btn btn-primary">削除</button>
+            </form>
             </div>
+            <hr class="border-2 border-secondary">
+            <h3 class="mb-3 mt-4">在庫登録/在庫リスト</h3>
+            <form method="POST" action="{{ route('item.create-stock', ['id' => $registered_item->id]) }}" onsubmit="return confirm('本当に登録しますか？')">
+            @csrf
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="shop_id">店舗</label>
+                        <select name="shop_id" class="custom-select mx-sm-3">
+                            @foreach ($shop as $shops)
+                            <option value="{{ $shops->id }}" {{ $shops->id == $registered_item->shop_id ? 'selected' : '' }}>
+                                {{ $shops->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock">在庫</label>
+                        <input class="form-control mx-sm-3" type="number" name="stock" value="{{ $registered_item->stock }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">在庫登録</button>
+            </form>
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
@@ -172,7 +191,6 @@
                             <th>商品名</th>
                             <th>店舗名</th>
                             <th>在庫数</th>
-                            <th>在庫管理</th>
                             <th>客注処理</th>
                         </tr>
                     </thead>
@@ -182,34 +200,17 @@
                             <td>{{ $inventory->item->name }}</td>
                             <td>{{ $inventory->shop->name }}</td>
                             <td>{{ $inventory->stock }}</td>
-                            @if($user_role === 2)<td><a href="" class="btn-sm btn-dark">在庫管理</a></td>@endif
                             <td>@if(!empty($item->stock))<a href="" class="btn-sm btn-success">客注処理</a>@else - @endif</td>
                         </tr>
                         @endforeach
                         @endif
                     </tbody>
                 </table>
-                <br>
-                <div class="form-group">
-                    <label for="shop_id">店舗</label><br>
-                    <select name="shop_id" class="custom-select w-25">
-                        @foreach ($shop as $shops)
-                        <option value="{{ $shops->id }}" {{ $shops->id == $registered_item->shop_id ? 'selected' : '' }}>
-                            {{ $shops->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="stock">在庫</label><br>
-                    <input class="form-control w-25" type="text" name="stock" value="{{ $registered_item->stock }}">
-                </div>
-
             </div>
         </div>
     </div>
 </div>
-</div>
+
 
 <script>
     function formSwitch() {
