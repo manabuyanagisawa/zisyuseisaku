@@ -45,7 +45,7 @@ Route::group(['middleware' => 'can:admin' , 'prefix' => 'items' , 'as' => 'item.
     // ④登録完了画面の表示
     Route::get('/thanks', [App\Http\Controllers\ItemController::class, 'showThanks'])->name('showThanks');
     // ⑤商品の詳細画面へ遷移
-    Route::get('/{id}', [App\Http\Controllers\ItemController::class, 'detail'])->name('detail');
+    Route::get('/{id}', [App\Http\Controllers\ItemController::class, 'show'])->name('show');
     // ⑥商品の更新機能 更新後、ホーム画面へ遷移する
     Route::post('/{id}', [App\Http\Controllers\ItemController::class, 'update'])->name('update');
     // ⑦商品の削除機能 削除後、ホーム画面へ遷移する

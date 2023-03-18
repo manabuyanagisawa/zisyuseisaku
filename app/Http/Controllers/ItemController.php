@@ -135,7 +135,9 @@ class ItemController extends Controller
     }
 
     // ⑤商品の詳細画面へ遷移
-    public function detail($id){
+    public function show($id){
+        $user = Auth::user();
+        $user_role = $user->role;
         $registered_item = Item::find($id);
         $shop = Shop::all();
         $user_id = $registered_item->user_id;
@@ -143,7 +145,7 @@ class ItemController extends Controller
         $update_user_id = $registered_item->update_user_id;
         $update_user = User::find($update_user_id);
         $inventories = Stock::where('item_id', $registered_item->id)->get();
-        return view('item.detail',compact('registered_item','shop','registered_user','update_user','inventories'));
+        return view('item.show',compact('registered_item','shop','registered_user','update_user','inventories','user_role'));
     }
 
     // ⑥更新機能 更新後にホーム画面に遷移

@@ -94,7 +94,6 @@
                                 <th>カラー</th>
                                 <th>シーズン</th>
                                 <th>更新・在庫管理</th>
-                                <th>客注処理</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -108,8 +107,7 @@
                                     <td>@if(!empty($item->wear_size)){{ App\Models\Item::getSizeName($item->wear_size);}}@else - @endif</td>
                                     <td>{{ App\Models\Item::getColorName($item->color);}}</td>
                                     <td>{{ $item->season }}</td>
-                                    @if($user_role === 2)<td><a href="{{ route('item.detail', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新・在庫管理</a></td>@endif
-                                    <td>@if(!empty($item->stock))<a href="{{ route('order.add', ['id'=>$item->id]) }}" class="btn-sm btn-success">客注</a>@else - @endif</td>
+                                    @if($user_role === 2)<td><a href="{{ route('item.show', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新・在庫管理</a></td>@endif
                                 </tr>
                             @endforeach
                         @endif
