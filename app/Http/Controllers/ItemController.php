@@ -8,7 +8,6 @@ use App\Models\Item;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\Stock;
-use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -30,6 +29,10 @@ class ItemController extends Controller
         $user_id = Auth::user();
         $user_role = $user_id->role;
         $shops = Shop::all();
+        $items = Item::all();
+        $items_id = $items->first()->id;
+        $item_stock = Stock::where('item_id',$items_id)->sum('stock');
+
         // 店舗の ID をキーにした配列を作成する
         $shop_names = $shops->pluck('name', 'id')->toArray();
 
@@ -61,7 +64,6 @@ class ItemController extends Controller
         // ページネーション設定 (10)は一度に表示する数
         // withQueryStringを使って検索後のページネーション
         $search_items = $query->paginate(10)->withQueryString();
-        $items = Item::all();
         return view('item.index', compact(
             'items',
             'search_items',
@@ -71,6 +73,7 @@ class ItemController extends Controller
             'season',
             'user_role',
             'shop_names',
+            'item_stock'
         ));
     }
 

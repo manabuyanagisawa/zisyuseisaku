@@ -51,6 +51,7 @@ Route::group(['middleware' => 'can:admin' , 'prefix' => 'items' , 'as' => 'item.
     // ⑦商品の削除機能 削除後、ホーム画面へ遷移する
     Route::post('/{id}/delete', [App\Http\Controllers\ItemController::class, 'delete'])->name('delete');
     Route::post('{id}/create-stock', [App\Http\Controllers\StockController::class, 'create'])->name('create-stock');
+    Route::post('{id}/reduce-stock', [App\Http\Controllers\StockController::class, 'reduce'])->name('reduce-stock');
 });
 
 Route::group(['middleware' => 'can:admin' , 'prefix' => 'shops' , 'as' => 'shop.'], function () {

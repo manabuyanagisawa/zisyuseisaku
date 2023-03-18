@@ -24,22 +24,49 @@ class StockController extends Controller
                 'stock.min' => '1以上の数値を入力してください。',
             ]
         );
-        
+
         if (Stock::where('shop_id', $shop_id)->where('item_id', $item->id)->exists()) {
-            $now_stock = Stock::where('shop_id', $shop_id)->
-                                where('item_id', $item->id)->first()->stock;
+            $now_stock = Stock::where('shop_id', $shop_id)->where('item_id', $item->id)->first()->stock;
             $new_stock = $now_stock + $request->input('stock');
-            Stock::where('item_id', $item->id)->update([
-                'stock'=> $new_stock
+            Stock::where('shop_id', $shop_id)->where('item_id', $item->id)->update([
+                'stock' => $new_stock
             ]);
-        }else{
+        } else {
             Stock::create([
                 'item_id' => $item->id,
                 'shop_id' => $request->shop_id,
                 'stock' => $request->stock,
-            ]);}
+            ]);
+        }
 
         return redirect()->route('home');
-    
+    }
+
+    public function reduce(Request $request, $id)
+    {
+        $item = Item::find($id);
+        $shop_id = $request->input('shop_id');
+
+        if (Stock::where('shop_id', $shop_id)->where('item_id', $item->id)->exists()) {
+            $now_stock = Stock::where('shop_id', $shop_id)->where('item_id', $item->id)->first()->stock;  
+            $request->validate(
+                [
+                    'stock' => "integer|min:1|max:{$now_stock}",
+                ],
+                [
+                    'stock.integer' => '在庫は必ず整数にしてください。',
+                    'stock.min' => '1以上の数値を入力してください。',
+                    'stock.max' => '在庫がマイナスになります。',
+                ]
+            );
+            $new_stock = $now_stock - $request->input('stock');
+            Stock::where('shop_id', $shop_id)->where('item_id', $item->id)->update([
+                'stock' => $new_stock
+            ]);
+            return redirect()->route('home');
+        } else {
+            $errors = collect(['商品が存在しません。']);
+            return back()->withErrors($errors);
+        }
     }
 }

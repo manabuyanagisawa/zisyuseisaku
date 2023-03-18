@@ -165,7 +165,7 @@
             <form method="POST" action="{{ route('item.create-stock', ['id' => $registered_item->id]) }}" onsubmit="return confirm('本当に登録しますか？')">
             @csrf
                 <div class="form-inline">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="shop_id">店舗</label>
                         <select name="shop_id" class="custom-select mx-sm-3">
                             @foreach ($shop as $shops)
@@ -175,12 +175,32 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="stock">在庫</label>
                         <input class="form-control mx-sm-3" type="number" name="stock" value="{{ $registered_item->stock }}">
                     </div>
-                    <button type="submit" class="btn btn-primary">在庫登録</button>
+                    <button type="submit" class="btn btn-primary mb-3">在庫追加</button>
             </form>
+            <form method="POST" action="{{ route('item.reduce-stock', ['id' => $registered_item->id]) }}" onsubmit="return confirm('本当に登録しますか？')">
+            @csrf
+                <div class="form-inline ">
+                    <div class="form-group mb-1">
+                        <label for="shop_id">店舗</label>
+                        <select name="shop_id" class="custom-select mx-sm-3">
+                            @foreach ($shop as $shops)
+                            <option value="{{ $shops->id }}" {{ $shops->id == $registered_item->shop_id ? 'selected' : '' }}>
+                                {{ $shops->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="stock">在庫</label>
+                        <input class="form-control mx-sm-3" type="number" name="stock" value="{{ $registered_item->stock }}">
+                    </div>
+                    <button type="submit" class="btn btn-secondary mb-1">在庫減算</button>
+            </form>
+
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
@@ -188,7 +208,6 @@
                         <p class="text-center pt-5">在庫がありません。</p>
                         @else
                         <tr>
-                            <th>商品名</th>
                             <th>店舗名</th>
                             <th>在庫数</th>
                             <th>客注処理</th>
@@ -196,15 +215,16 @@
                     </thead>
                     <tbody>
                         @foreach ($inventories as $inventory)
+                        @if($inventory->stock > 0)
                         <tr>
-                            <td>{{ $inventory->item->name }}</td>
                             <td>{{ $inventory->shop->name }}</td>
-                            <td>{{ $inventory->stock }}</td>
-                            <td>@if(!empty($item->stock))<a href="" class="btn-sm btn-success">客注処理</a>@else - @endif</td>
+                            <td>{{ $inventory->stock }}枚/個</td>
+                            <td><a href="" class="btn-sm btn-success">客注処理</a></td>
                         </tr>
-                        @endforeach
                         @endif
+                        @endforeach
                     </tbody>
+                    @endif
                 </table>
             </div>
         </div>

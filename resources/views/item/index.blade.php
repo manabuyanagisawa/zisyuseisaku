@@ -93,11 +93,13 @@
                                 <th>サイズ</th>
                                 <th>カラー</th>
                                 <th>シーズン</th>
-                                <th>更新・在庫管理</th>
+                                <th>在庫</th>
+                                @if($user_role === 2)<th>更新・在庫管理</th>@endif
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($search_items as $item)
+                            @if($item_stock !== 0)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
@@ -107,8 +109,10 @@
                                     <td>@if(!empty($item->wear_size)){{ App\Models\Item::getSizeName($item->wear_size);}}@else - @endif</td>
                                     <td>{{ App\Models\Item::getColorName($item->color);}}</td>
                                     <td>{{ $item->season }}</td>
+                                    <td></td>
                                     @if($user_role === 2)<td><a href="{{ route('item.show', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新・在庫管理</a></td>@endif
                                 </tr>
+                                @endif
                             @endforeach
                         @endif
                         </tbody>
