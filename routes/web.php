@@ -52,6 +52,7 @@ Route::group(['middleware' => 'can:admin' , 'prefix' => 'items' , 'as' => 'item.
     Route::post('/{id}/delete', [App\Http\Controllers\ItemController::class, 'delete'])->name('delete');
     Route::post('{id}/create-stock', [App\Http\Controllers\StockController::class, 'create'])->name('create-stock');
     Route::post('{id}/reduce-stock', [App\Http\Controllers\StockController::class, 'reduce'])->name('reduce-stock');
+    Route::post('{id}/fluctuating-stock', [App\Http\Controllers\StockController::class, 'fluctuating'])->name('fluctuating-stock');
 });
 
 Route::group(['middleware' => 'can:admin' , 'prefix' => 'shops' , 'as' => 'shop.'], function () {

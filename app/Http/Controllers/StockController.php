@@ -69,4 +69,60 @@ class StockController extends Controller
             return back()->withErrors($errors);
         }
     }
+
+    public function fluctuating(Request $request, $id){
+        $item = Item::find($id);
+
+        // $get_shopは移動先の店舗 $move_shopは出荷店舗 $fluctuating_stockは変動する在庫
+        $get_shop = $request->input('get_shop');
+        $move_shop = $request->input('move_shop');
+        $fluctuating_stock = $request->input('fluctuating_stock');
+
+        // 移動先の店舗の処理(在庫追加)
+        $request->validate(
+            [
+                'fluctuating_stock' => 'integer|min:1',
+            ],
+            [
+                'fluctuating_stock.integer' => '在庫は必ず整数にしてください。',
+                'fluctuating_stock.min' => '1以上の数値を入力してください。',
+            ]
+        );
+
+        if (Stock::where('shop_id', $get_shop)->where('item_id', $item->id)->exists()) {
+            $now_stock = Stock::where('shop_id', $get_shop)->where('item_id', $item->id)->first()->stock;
+            $new_stock = $now_stock + $request->input('fluctuating_stock');
+            Stock::where('shop_id', $get_shop)->where('item_id', $item->id)->update([
+                'stock' => $new_stock
+            ]);
+        } else {
+            Stock::create([
+                'item_id' => $item->id,
+                'shop_id' => $request->shop_id,
+                'stock' => $request->stock,
+            ]);
+        }
+
+        // 出荷店舗の処理(在庫の減算)
+        if (Stock::where('shop_id', $move_shop)->where('item_id', $item->id)->exists()) {
+            $now_stock = Stock::where('shop_id', $move_shop)->where('item_id', $item->id)->first()->stock;  
+            $request->validate(
+                [
+                    'fluctuating_stock' => "integer|min:1|max:{$now_stock}",
+                ],
+                [
+                    'fluctuating_stock.integer' => '在庫は必ず整数にしてください。',
+                    'fluctuating_stock.min' => '1以上の数値を入力してください。',
+                    'fluctuating_stock.max' => '在庫がマイナスになります。',
+                ]
+            );
+            $new_stock = $now_stock - $fluctuating_stock;
+            Stock::where('shop_id', $move_shop)->where('item_id', $item->id)->update([
+                'stock' => $new_stock
+            ]);
+            
+            return redirect()->route('home');
+        }
+
+    }
 }
