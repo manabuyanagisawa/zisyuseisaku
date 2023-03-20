@@ -261,10 +261,10 @@
     function formSwitch() {
         var status = document.getElementsByName('type');
         if (status[2].checked) {
-            // ウェアが選択されたら下記を実行します
+            // ウェアが選択されたら下記を実行
             document.getElementById('wearSize').style.display = "";
         } else {
-            // ウェアが選択されていない場合は非表示にします
+            // ウェアが選択されていない場合は非表示
             document.getElementById('wearSize').style.display = "none";
         }
     }

@@ -99,7 +99,6 @@
                         </thead>
                         <tbody>
                             @foreach ($search_items as $item)
-                            @if($item_stock !== 0)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
@@ -112,7 +111,6 @@
                                     <td></td>
                                     @if($user_role === 2)<td><a href="{{ route('item.show', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新・在庫管理</a></td>@endif
                                 </tr>
-                                @endif
                             @endforeach
                         @endif
                         </tbody>
