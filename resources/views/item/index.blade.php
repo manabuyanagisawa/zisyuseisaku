@@ -19,7 +19,7 @@
                     <div class="input-group-append">
                     @if($user_role === 2)
                     <div class="card-tools">
-                        <div class="input-group input-group-sm">
+                        <div class="input-group-sm">
                             <div class="input-group-append">
                                 <a href="{{ url('items/add') }}" class="btn btn-primary">商品登録</a>
                             </div>
@@ -108,7 +108,11 @@
                                     <td>@if(!empty($item->wear_size)){{ App\Models\Item::getSizeName($item->wear_size);}}@else - @endif</td>
                                     <td>{{ App\Models\Item::getColorName($item->color);}}</td>
                                     <td>{{ $item->season }}</td>
-                                    <td></td>
+                                    <td>@if ($item->stocks->sum('stock') > 0)
+                                        <span class="badge rounded-pill bg-info text-dark">在庫あり</span>
+                                        @else
+                                        <span class="badge rounded-pill bg-success text-dark">在庫無し</span>
+                                        @endif</td>
                                     @if($user_role === 2)<td><a href="{{ route('item.show', ['id'=>$item->id]) }}" class="btn-sm btn-dark">更新・在庫管理</a></td>@endif
                                 </tr>
                             @endforeach

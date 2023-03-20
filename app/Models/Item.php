@@ -29,9 +29,6 @@ class Item extends Model
         return $colors[$color_id];
     }
 
-
-
-
     
     protected $table = 'items';
     /**
@@ -54,6 +51,13 @@ class Item extends Model
     public function shops()
     {
         return $this->belongsToMany(Shop::class, 'stock');
+    }
+
+    protected $with = ['stocks']; // Eager Loadingの指定
+
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
     }
 
     /**
