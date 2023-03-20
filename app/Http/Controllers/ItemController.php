@@ -30,8 +30,6 @@ class ItemController extends Controller
         $user_role = $user_id->role;
         $shops = Shop::all();
         $items = Item::all();
-        $items_id = $items->first()->id;
-        $item_stock = Stock::where('item_id',$items_id)->sum('stock');
 
         // 店舗の ID をキーにした配列を作成する
         $shop_names = $shops->pluck('name', 'id')->toArray();
@@ -73,7 +71,6 @@ class ItemController extends Controller
             'season',
             'user_role',
             'shop_names',
-            'item_stock'
         ));
     }
 

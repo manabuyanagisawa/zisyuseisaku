@@ -98,8 +98,8 @@ class StockController extends Controller
         } else {
             Stock::create([
                 'item_id' => $item->id,
-                'shop_id' => $request->shop_id,
-                'stock' => $request->stock,
+                'shop_id' => $get_shop,
+                'stock' => $fluctuating_stock,
             ]);
         }
 
