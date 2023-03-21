@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', '商品詳細')
+@section('title', '商品更新・在庫管理')
 
 @section('content_header')
-<h1>商品詳細</h1>
+<h1>商品更新・在庫管理</h1>
 @stop
 
 @section('content')
