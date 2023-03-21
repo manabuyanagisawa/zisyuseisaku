@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', '商品登録')
+@section('title', '利用者更新')
 
 @section('content_header')
-    <h1>商品詳細</h1>
+    <h1>利用者更新</h1>
 @stop
 
 @section('content')
